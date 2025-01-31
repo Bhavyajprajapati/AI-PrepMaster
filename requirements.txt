@@ -1,1 +1,1 @@
-streamlit
+streamlit pymongo bcrypt
