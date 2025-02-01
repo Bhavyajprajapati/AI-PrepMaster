@@ -1,8 +1,10 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from config import APP_CONFIG
-from auth import login_st_interface, signup_st_interface, forget_st_interface
-from home import home
+
+# files imports
+from home.config import APP_CONFIG
+from login.auth import login_st_interface, signup_st_interface, forget_st_interface
+from home.home import home
 
 st.set_page_config(**APP_CONFIG)
 

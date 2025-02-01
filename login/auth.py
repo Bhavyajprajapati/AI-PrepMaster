@@ -1,6 +1,6 @@
 import streamlit as st
-from database import users_collection
-from utils import hash_password, verify_password
+from login.database import users_collection
+from login.utils import hash_password, verify_password
 
 def signup(email, username, password, favorite_person):
     if users_collection.find_one({"email": email}):
