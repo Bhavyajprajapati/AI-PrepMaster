@@ -1,3 +1,4 @@
 streamlit
 pymongo
 bcrypt
+google-generativeai

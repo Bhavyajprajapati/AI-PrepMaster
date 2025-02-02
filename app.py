@@ -5,6 +5,7 @@ from streamlit_option_menu import option_menu
 from home.config import APP_CONFIG
 from login.auth import login_st_interface, signup_st_interface, forget_st_interface
 from home.home import home
+from home.UsageGuide.usage_guide import usage_guide_interface
 
 st.set_page_config(**APP_CONFIG)
 
@@ -23,7 +24,7 @@ else:
         menu = option_menu(
             menu_title='AI-PrepMaster',
             options=['Login', 'Signup', 'Forget password', 'Usage guide'],
-            icons=['person-circle', 'person-add', 'key-fill', 'info-circle-fill'],
+            icons=['person-circle', 'person-add', 'key-fill', 'info-circle-fill','book'],
             menu_icon='list',
             # menu_icon=None,
             default_index=0,
@@ -42,4 +43,14 @@ else:
     elif menu == "Forget password":
         forget_st_interface()
     elif menu == "Usage guide":
-        st.title("About AI-PrepMaster Using")
+        st.title("Welcom to Ai-prprMaster")
+        st.subheader("How to use")
+        login_time_guide = """
+    <p>
+        <p>1. Signup from sidebar</p>
+        <p>2. Login from sidebar</p>
+    </p>
+    
+    """
+        st.markdown(login_time_guide,unsafe_allow_html=True)     
+        usage_guide_interface()
