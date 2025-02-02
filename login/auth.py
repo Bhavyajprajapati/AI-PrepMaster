@@ -37,7 +37,7 @@ def login_st_interface():
     st.markdown("""
         <h3 style='text-align:center;'>Ai-PreapMaster</h3>            
         """,unsafe_allow_html=True)
-    st.image("media_files/home_img.png",use_column_width=True)
+    st.image("media_files/home_img_new.png",use_column_width=True)
     st.markdown("""
         <p style='font-size:18px; text-align:center'>
         Want to learn, why wait? just login and <strong style='color:dodgerblue'>Get Started!<strong></p>
