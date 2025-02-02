@@ -7,6 +7,9 @@ from streamlit_option_menu import option_menu
 from home.LearnTopic.learn_particular_topic import learn_particular_topic_interface
 from home.TestTopic.test_with_topic import test_with_topic_interface
 from home.YourMaterialTopic.test_with_your_material import test_with_your_material_interface
+from home.OMRCecking.omr_checking import omr_checking_interface
+from home.TestForOMR.test_for_omr import test_create_for_omr_purpose_interface
+from home.UsageGuide.usage_guide import usage_guide_interface
 
 def home():
     st.title("Welcome to AI-PrepMaster")
@@ -21,20 +24,16 @@ def home():
     
     
 
-    if st.sidebar.button("Logout"):
-        st.session_state["logged_in"] = False
-        st.session_state.pop("username", None)
-        st.session_state["page"] = "Login"
-        st.rerun()
+    
 
     with st.sidebar:
         choice = option_menu(
             menu_title="Functionalities",
-            options=['Learn particular Topic', 'Test with Topics',
-                     'Test with your own material'],
+            options=['Learn particular topic', 'Test with topics',
+                     'Test with your own material','Create test for OMR purpose','OMR checking','Usage Guide'],
             # icons=['person-circle',]
             menu_icon='none',
-            default_index=0,
+            default_index=5,
             styles={
                 "container": {"padding": "5!important","background-color":'black'},
     "icon": {"color": "white", "font-size": "23px"}, 
@@ -44,14 +43,28 @@ def home():
 
 
         
-    if choice == "Learn particular Topic":
+    if choice == "Learn particular topic":
         learn_particular_topic_interface()
         
-    elif choice == "Test with Topics":
+    elif choice == "Test with topics":
         test_with_topic_interface()
         
     elif choice == "Test with your own material":
         test_with_your_material_interface()
         
+    elif choice == "Create test for OMR purpose":
+        test_create_for_omr_purpose_interface()
+        
+    elif choice == "OMR checking":
+        omr_checking_interface()
+        
+    elif choice == "Usage Guide":
+        usage_guide_interface()
+        
+    if st.sidebar.button("Logout"):
+        st.session_state["logged_in"] = False
+        st.session_state.pop("username", None)
+        st.session_state["page"] = "Login"
+        st.rerun()
 
         
