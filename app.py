@@ -7,7 +7,7 @@ from login.auth import login_st_interface, signup_st_interface, forget_st_interf
 from home.home import home
 from home.UsageGuide.usage_guide import usage_guide_interface
 
-st.set_page_config(**APP_CONFIG)
+#st.set_page_config(**APP_CONFIG)
 
 # Session Management
 if "logged_in" not in st.session_state:

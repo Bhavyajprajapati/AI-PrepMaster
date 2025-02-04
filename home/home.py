@@ -23,9 +23,6 @@ def home():
     )
     
     
-
-    
-
     with st.sidebar:
         choice = option_menu(
             menu_title="Functionalities",
@@ -65,6 +62,7 @@ def home():
         st.session_state["logged_in"] = False
         st.session_state.pop("username", None)
         st.session_state["page"] = "Login"
+        st.session_state['uploaded_and_analyzed'] = False
         st.rerun()
 
         

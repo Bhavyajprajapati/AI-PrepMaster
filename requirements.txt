@@ -2,3 +2,14 @@ streamlit
 pymongo
 bcrypt
 google-generativeai
+time
+PyPDF2
+pinecone
+json
+re
+openai
+langchain_huggingface
+langchain_pinecone
+uuid
+langchain_core
+langchain_experimental

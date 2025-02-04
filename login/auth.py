@@ -54,6 +54,12 @@ def login_st_interface():
             st.session_state["username"] = username
             st.session_state["page"] = "Home"
             st.success(f"Welcome, {username}!")
+            st.session_state["uploaded_and_analyzed"] = False
+            st.session_state.quiz_data = {
+                "questions": {},
+                "submitted": False,
+                "time_remaining": 0,
+            }
             st.rerun()
         else:
             st.error("Invalid email or password.")
