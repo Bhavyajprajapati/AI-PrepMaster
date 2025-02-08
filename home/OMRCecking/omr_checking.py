@@ -1,11 +1,11 @@
-import os
 import tempfile
 import streamlit as st
 import cv2
 import numpy as np
 import io
 from fpdf import FPDF
-
+import fitz  # PyMuPDF
+from PIL import Image
 # Function to reorder points for perspective transformation
 def reorder(myPoints):
     if myPoints.shape[0] != 4:
@@ -82,10 +82,20 @@ def calculate_score(grading, negative_count, negative_marking, questions):
     score = correct_answers_count - (negative_count * negative_marking)
     return max(0, score)  # Ensure the score is not negative
 
+def pdf_to_images(pdf_file):
+    images = []
+    pdf_document = fitz.open(stream=pdf_file.read(), filetype="pdf")
+    for page_num in range(len(pdf_document)):
+        page = pdf_document.load_page(page_num)
+        pix = page.get_pixmap()
+        img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+        images.append(np.array(img))
+    return images
+
 def omr_checking_interface():
     st.subheader("OMR Sheet Checking")
     
-    uploaded_files = st.file_uploader("Upload OMR sheet images",help="Multiple images are also allowed", type=["jpg", "png", "jpeg"], accept_multiple_files=True)
+    uploaded_files = st.file_uploader("Upload OMR sheet images",help="Multiple images are also allowed", type=["jpg", "png", "jpeg" ,"pdf"], accept_multiple_files=True)
     questions = st.selectbox("Number of Questions", options=[10, 15, 20, 25,30])
     negative_marking = st.number_input("Negative Marking Value", min_value=0.0, value=0.0)
     choices = st.number_input("Number of Choices", min_value=4,max_value=5)
@@ -158,15 +168,31 @@ def omr_checking_interface():
     if uploaded_files and st.button("Check OMR Sheet"):
         processed_images = []
         
+        images = []
         with st.status("Processing images...",expanded=True) as status:
             for uploaded_file in uploaded_files:
-                file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-                img = cv2.imdecode(file_bytes, 1)
+                if uploaded_file.type == "application/pdf":
+                    # Convert PDF to images
+                    images_t = pdf_to_images(uploaded_file)
+                    for img in images_t:
+                        # img = cv2.resize(img, (widthImg, heightImg))
+                        images.append(img)
+                else:
+                    # Process image files
+                    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+                    img = cv2.imdecode(file_bytes, 1)
+                    images.append(img)
+        
+            
+            
+            for uploaded_file in images:
+                # file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+                # img = cv2.imdecode(file_bytes, 1)
                 
                         
                 
 
-                img = cv2.resize(img, (widthImg, heightImg))
+                img = cv2.resize(uploaded_file, (widthImg, heightImg))
                 imgFinal = img.copy()
                 imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
                 # st.image(imgGray)
@@ -228,8 +254,8 @@ def omr_checking_interface():
                                         marked_indices = np.where(row >= max_val - 800)[0]  # Allow small variations due to noise
                                 else:
                                     marked_indices = np.where(row >= max_val - 700)[0]  # Allow small variations due to noise
-                                print(max_val)
-                                print(row)
+                                # print(max_val)
+                                # print(row)
                                 
                                 # because if no one is marked then all are nearer to each other and so i recieve
                                 # it as all marked if i not add < 2000 condition
@@ -392,8 +418,10 @@ def omr_checking_interface():
                     processed_image = cv2.resize(imgFinal,(1000,1400))
                 else:
                     processed_image = imgFinal
-                processed_images.append((uploaded_file.name, processed_image))
-                st.image(processed_image, caption=f"Processed: {uploaded_file.name}", use_column_width=True, channels="GRAY")
+                # processed_images.append((uploaded_file.name, processed_image))
+                processed_images.append(processed_image)
+                st.image(processed_image, caption=f"Processed: image", use_column_width=True, channels="GRAY")
+                # st.image(processed_image, caption=f"Processed: {uploaded_file.name}", use_column_width=True, channels="GRAY")
             status.update(label="Processing complete!", state="complete", expanded=False)  # Finish status
 
 
@@ -402,7 +430,8 @@ def omr_checking_interface():
         if processed_images:
             pdf = FPDF()
             with st.status("Generating pdf...",expanded=True)as status:
-                for image_name, image in processed_images:
+                # for image_name, image in processed_images:
+                for image in processed_images:
                     # Save the image to a temporary file
                     with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmpfile:
                         cv2.imwrite(tmpfile.name, image)

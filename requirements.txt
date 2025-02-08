@@ -2,14 +2,19 @@ streamlit
 pymongo
 bcrypt
 google-generativeai
-time
+# time
 PyPDF2
 pinecone
-json
-re
+# json
+# re
 openai
 langchain_huggingface
 langchain_pinecone
-uuid
+# uuid
 langchain_core
 langchain_experimental
+opencv-python
+numpy
+fpdf
+pymupdf
+pillow
