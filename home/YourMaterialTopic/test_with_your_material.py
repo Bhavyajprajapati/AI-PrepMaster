@@ -187,19 +187,6 @@ def submit_quiz():
         st.cache_data.clear()  # Clearing cached data
 
 
-
-def clear_container(container):
-    container.empty()
-
-lt = st.empty()
-with lt.container():
-    st.markdown("""
-    <h1 style='text-align:center;'>AI-PrepMaster</h1>            
-    """,unsafe_allow_html=True)
-    st.write("")
-
-    col1, col2, col3 = st.columns([0.2,0.5,0.2])
-
 def upload_and_analyze():
     uploaded_file = st.file_uploader("Upload the PDF file only",type=['pdf'])
     r_text = ""
