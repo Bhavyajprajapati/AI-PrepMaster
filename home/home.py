@@ -10,7 +10,7 @@ from home.YourMaterialTopic.test_with_your_material import test_with_your_materi
 from home.OMRCecking.omr_checking import omr_checking_interface
 from home.TestForOMR.test_for_omr import test_create_for_omr_purpose_interface
 from home.UsageGuide.usage_guide import usage_guide_interface
-
+from home.SamplePdf.sample_pdf_interface import download_omr_interface 
 def home():
     st.title("Welcome to AI-PrepMaster")
     
@@ -27,10 +27,10 @@ def home():
         choice = option_menu(
             menu_title="Functionalities",
             options=['Learn particular topic', 'Test with topics',
-                     'Test with your own material','Create test for OMR purpose','OMR checking','Usage Guide'],
+                     'Test with your own material','Create test for OMR purpose','OMR checking','Download OMR','Usage Guide'],
             # icons=['person-circle',]
             menu_icon='none',
-            default_index=5,
+            default_index=6,
             styles={
                 "container": {"padding": "5!important","background-color":'black'},
     "icon": {"color": "white", "font-size": "23px"}, 
@@ -57,7 +57,10 @@ def home():
         
     elif choice == "Usage Guide":
         usage_guide_interface()
-        
+    
+    elif choice == "Download OMR":
+        download_omr_interface()
+    
     if st.sidebar.button("Logout"):
         st.session_state["logged_in"] = False
         st.session_state.pop("username", None)
