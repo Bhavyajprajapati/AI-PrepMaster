@@ -164,7 +164,7 @@ def omr_checking_interface():
 
     
     
-          
+        
     if uploaded_files and st.button("Check OMR Sheet"):
         processed_images = []
         
