@@ -4,12 +4,13 @@ import time
 import re
 import google.generativeai as genai
 from openai import OpenAI
-from .Pdf import generate_quiz_pdf
+from Pdf import generate_quiz_pdf
 
 # Get Hugging Face API token
 HF_API_KEY = "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"
 session = st.session_state
-
+API_KEY="AIzaSyAFUFDlRGjxn_VEDn24vQ1BeFnXuoc-SIM"
+genai.configure(api_key=API_KEY)
 openai = OpenAI(api_key=HF_API_KEY, base_url="https://api-inference.huggingface.co/v1")
 
 
@@ -103,19 +104,36 @@ def submit_quiz():
 
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("Download Quiz (Questions Only)"):
-                generate_quiz_pdf(
-                    session.quiz_data, "quiz_questions.pdf", include_answers=False
-                )
-
-                st.success("Quiz PDF generated! (Questions Only)")
+            try:
+                pdf_bytes = generate_quiz_pdf(
+                        quiz_data=session.quiz_data,
+                        filename="quiz_questions.pdf",
+                        include_answers=False
+                    )
+                st.download_button(
+                        label="Download Quiz (Questions Only)",
+                        data=pdf_bytes,
+                        file_name="quiz_questions.pdf",
+                        mime="application/pdf",
+                    )
+            except Exception as e:
+                st.error(f"Error generating PDF: {str(e)}")
 
         with col2:
-            if st.button("Download Quiz with Answers"):
-                generate_quiz_pdf(
-                    session.quiz_data, "quiz_with_answers.pdf", include_answers=True
+            try:
+                pdf_bytes_with_answers = generate_quiz_pdf(
+                    quiz_data=session.quiz_data,
+                    filename="quiz_with_answers.pdf",
+                    include_answers=True
                 )
-                st.success("Quiz PDF generated! (With Answers)")
+                st.download_button(
+                    label="Download Quiz with Answers",
+                    data=pdf_bytes_with_answers,
+                    file_name="quiz_with_answers.pdf",
+                    mime="application/pdf",
+                )
+            except Exception as e:
+                st.error(f"Error generating PDF: {str(e)}")
 
         # Reset the quiz state after submission
         session.quiz_data = {
@@ -169,18 +187,36 @@ def auto_submit_quiz():
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("Download Quiz (Questions Only)"):
-            generate_quiz_pdf(
-                session.quiz_data, "quiz_questions.pdf", include_answers=False
+        try:
+            pdf_bytes = generate_quiz_pdf(
+                quiz_data=session.quiz_data,
+                filename="quiz_questions.pdf",
+                include_answers=False
             )
-            st.success("Quiz PDF generated! (Questions Only)")
+            st.download_button(
+                label="Download Quiz (Questions Only)",
+                data=pdf_bytes,
+                file_name="quiz_questions.pdf",
+                mime="application/pdf",
+            )
+        except Exception as e:
+            st.error(f"Error generating PDF: {str(e)}")
 
     with col2:
-        if st.button("Download Quiz with Answers"):
-            generate_quiz_pdf(
-                session.quiz_data, "quiz_with_answers.pdf", include_answers=True
+        try:
+            pdf_bytes_with_answers = generate_quiz_pdf(
+                quiz_data=session.quiz_data,
+                filename="quiz_with_answers.pdf",
+                include_answers=True
             )
-            st.success("Quiz PDF generated! (With Answers)")
+            st.download_button(
+                label="Download Quiz with Answers",
+                data=pdf_bytes_with_answers,
+                file_name="quiz_with_answers.pdf",
+                mime="application/pdf",
+            )
+        except Exception as e:
+            st.error(f"Error generating PDF: {str(e)}")
 
     # Reset the quiz state after submission
     st.session_state.quiz_data = {
@@ -221,3 +257,6 @@ def test_with_topic_interface():
 
     if session.quiz_data["questions"]:
         display_question()
+
+if __name__ == "__main__":
+    test_with_topic_interface()
