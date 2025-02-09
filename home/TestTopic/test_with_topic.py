@@ -1,23 +1,20 @@
 import streamlit as st
-import os
-
-# from dotenv import load_dotenv
 import json
 import time
 import re
+import google.generativeai as genai
 from openai import OpenAI
+from Pdf import generate_quiz_pdf
 
 # Get Hugging Face API token
 HF_API_KEY = "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"
 session = st.session_state
-
+API_KEY="AIzaSyAFUFDlRGjxn_VEDn24vQ1BeFnXuoc-SIM"
+genai.configure(api_key=API_KEY)
 openai = OpenAI(api_key=HF_API_KEY, base_url="https://api-inference.huggingface.co/v1")
 
 
 def extract_json(response_text):
-    """
-    Extracts valid JSON from the API response.
-    """
     try:
         return json.loads(re.sub(r"```json|```|\\n", "", response_text).strip())
     except json.JSONDecodeError:
@@ -48,16 +45,15 @@ def fetch_questions(text_content, quiz_level, number):
     message = [{"role": "user", "content": PROMPT}]
 
     try:
-        chat_completion = openai.chat.completions.create(
-            model="google/gemma-2-2b-it",
-            messages=[{"role": m["role"], "content": m["content"]} for m in message],
-            temperature=0.5,
-            max_tokens=7000,
-            stream=False,
-        )
+        model_name = "models/gemini-1.5-flash"
+        model = genai.GenerativeModel(model_name)
+        response = model.generate_content(PROMPT)
+        res = response.text
 
-        res = chat_completion.choices[0].message.content
+        # res = chat_completion.choices[0].message.content
+        # st.write(f"Response : {res}")
         cleaned_res = extract_json(res)
+        # st.write(f"Cleaned text: {cleaned_res}")
         return cleaned_res.get("MCQS", [])
     except BaseException as e:
         return print("API Error!" + str(e)), 399
@@ -74,7 +70,7 @@ def display_question():
 
             # Display radio button for options
             selected_option = st.radio(
-                f"Select an answer:",
+                f"Select an answer :",
                 options=list(question["Options"].values()),  # Extract values only
                 key=f"q_{q_index}",  # Unique key per question
                 index=None,  # Allow user to choose, but no default selection
@@ -97,7 +93,7 @@ def submit_quiz():
             selected = session.quiz_data["selected_options"].get(i, "Not Answered")
             correct = question["Options"].get(question["Correct_option"], "Unknown")
 
-            st.write(f"**{question['Mcq']}**")
+            st.write(f"**{i+1}**" + " :- " + f"**{question['Mcq']}**")
             st.write(f"Your Answer: {selected}")
             st.write(f"Correct Answer: {correct}")
 
@@ -105,6 +101,39 @@ def submit_quiz():
                 marks += 1
 
         st.subheader(f"Final Score: {marks} / {len(questions)}")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            try:
+                pdf_bytes = generate_quiz_pdf(
+                        quiz_data=session.quiz_data,
+                        filename="quiz_questions.pdf",
+                        include_answers=False
+                    )
+                st.download_button(
+                        label="Download Quiz (Questions Only)",
+                        data=pdf_bytes,
+                        file_name="quiz_questions.pdf",
+                        mime="application/pdf",
+                    )
+            except Exception as e:
+                st.error(f"Error generating PDF: {str(e)}")
+
+        with col2:
+            try:
+                pdf_bytes_with_answers = generate_quiz_pdf(
+                    quiz_data=session.quiz_data,
+                    filename="quiz_with_answers.pdf",
+                    include_answers=True
+                )
+                st.download_button(
+                    label="Download Quiz with Answers",
+                    data=pdf_bytes_with_answers,
+                    file_name="quiz_with_answers.pdf",
+                    mime="application/pdf",
+                )
+            except Exception as e:
+                st.error(f"Error generating PDF: {str(e)}")
 
         # Reset the quiz state after submission
         session.quiz_data = {
@@ -147,7 +176,7 @@ def auto_submit_quiz():
         selected = session.quiz_data["selected_options"].get(i, "Not Answered")
         correct = question["Options"].get(question["Correct_option"], "Unknown")
 
-        st.write(f"**{question['Mcq']}**")
+        st.write(f"**{i+1}**" + " :- " + f"**{question['Mcq']}**")
         st.write(f"Your Answer: {selected}")
         st.write(f"Correct Answer: {correct}")
 
@@ -155,6 +184,39 @@ def auto_submit_quiz():
             marks += 1
 
     st.subheader(f"Final Score: {marks} / {len(questions)}")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        try:
+            pdf_bytes = generate_quiz_pdf(
+                quiz_data=session.quiz_data,
+                filename="quiz_questions.pdf",
+                include_answers=False
+            )
+            st.download_button(
+                label="Download Quiz (Questions Only)",
+                data=pdf_bytes,
+                file_name="quiz_questions.pdf",
+                mime="application/pdf",
+            )
+        except Exception as e:
+            st.error(f"Error generating PDF: {str(e)}")
+
+    with col2:
+        try:
+            pdf_bytes_with_answers = generate_quiz_pdf(
+                quiz_data=session.quiz_data,
+                filename="quiz_with_answers.pdf",
+                include_answers=True
+            )
+            st.download_button(
+                label="Download Quiz with Answers",
+                data=pdf_bytes_with_answers,
+                file_name="quiz_with_answers.pdf",
+                mime="application/pdf",
+            )
+        except Exception as e:
+            st.error(f"Error generating PDF: {str(e)}")
 
     # Reset the quiz state after submission
     st.session_state.quiz_data = {
@@ -195,3 +257,6 @@ def test_with_topic_interface():
 
     if session.quiz_data["questions"]:
         display_question()
+
+if __name__ == "__main__":
+    test_with_topic_interface()

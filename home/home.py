@@ -27,7 +27,7 @@ def home():
         choice = option_menu(
             menu_title="Functionalities",
             options=['Learn particular topic', 'Test with topics',
-                     'Test with your own material','Create test for OMR purpose','OMR checking','Download OMR','Usage Guide'],
+                    'Test with your own material','Create test for OMR purpose','OMR checking','Download OMR','Usage Guide'],
             # icons=['person-circle',]
             menu_icon='none',
             default_index=6,
