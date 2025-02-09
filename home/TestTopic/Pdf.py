@@ -41,18 +41,15 @@ class QuizPDFGenerator(FPDF):
 
             self.set_font("Arial", "", 9)
             for option_key, option_value in question["Options"].items():
-                # Changed the arrow character to a simple dash and asterisk
-                prefix = (
-                    "=> "
-                    if show_answers and option_key == question["Correct_option"]
-                    else "   "
-                )
+                prefix = "   "  # Default empty prefix
+
                 if selected_options and i in selected_options:
-                    if option_value == selected_options[i]:
-                        prefix = " * "
+                    if option_value == selected_options[i]:  # User-selected option
+                        prefix = "->"  # Add tick mark
+
                 self.multi_cell(0, 10, f"{prefix}{option_key}) {option_value}")
 
-            self.ln(5)
+            self.ln(5)  # Space after each question
 
 
 def generate_quiz_pdf(quiz_data, filename, include_answers=False):
