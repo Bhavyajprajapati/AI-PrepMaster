@@ -4,7 +4,7 @@ import time
 import re
 import google.generativeai as genai
 from openai import OpenAI
-from Pdf import generate_quiz_pdf
+from home.TestTopic.Pdf import generate_quiz_pdf
 
 # Get Hugging Face API token
 HF_API_KEY = "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"
