@@ -2,6 +2,7 @@ from fpdf import FPDF
 from datetime import datetime
 import streamlit as st
 import io
+import zipfile
 
 
 class QuizPDFGenerator(FPDF):
@@ -41,9 +42,8 @@ class QuizPDFGenerator(FPDF):
 
             self.set_font("Arial", "", 9)
             for option_key, option_value in question["Options"].items():
-                # Changed the arrow character to a simple dash and asterisk
                 prefix = (
-                    "=> "
+                    "-> "
                     if show_answers and option_key == question["Correct_option"]
                     else "   "
                 )
@@ -55,7 +55,7 @@ class QuizPDFGenerator(FPDF):
             self.ln(5)
 
 
-def generate_quiz_pdf(quiz_data, filename, include_answers=False):
+def generate_quiz_pdf(quiz_data, include_answers=False):
     pdf = QuizPDFGenerator()
     pdf.create_title("Quiz Questions")
 
@@ -87,5 +87,18 @@ def generate_quiz_pdf(quiz_data, filename, include_answers=False):
             0, 10, f"Final Score: {correct_count}/{len(quiz_data['questions'])}", 0, 1
         )
 
-    # Return PDF as bytes
     return pdf.output(dest="S").encode("latin-1", errors="replace")
+
+
+def generate_quiz_zip(quiz_data):
+    """Generate a ZIP file containing both quiz PDFs."""
+    pdf_questions = generate_quiz_pdf(quiz_data, include_answers=False)
+    pdf_answers = generate_quiz_pdf(quiz_data, include_answers=True)
+
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+        zip_file.writestr("quiz_questions.pdf", pdf_questions)
+        zip_file.writestr("quiz_with_answers.pdf", pdf_answers)
+
+    zip_buffer.seek(0)
+    return zip_buffer
