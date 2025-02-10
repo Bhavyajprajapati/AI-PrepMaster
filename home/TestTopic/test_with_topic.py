@@ -6,12 +6,12 @@ import google.generativeai as genai
 import zipfile
 import io
 from openai import OpenAI
-from Pdf import generate_quiz_zip
+from home.TestTopic.Pdf import generate_quiz_zip
 
 # Get Hugging Face API token
 HF_API_KEY = "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"
 session = st.session_state
-API_KEY="AIzaSyAFUFDlRGjxn_VEDn24vQ1BeFnXuoc-SIM"
+API_KEY = "AIzaSyAFUFDlRGjxn_VEDn24vQ1BeFnXuoc-SIM"
 genai.configure(api_key=API_KEY)
 openai = OpenAI(api_key=HF_API_KEY, base_url="https://api-inference.huggingface.co/v1")
 
@@ -170,16 +170,16 @@ def auto_submit_quiz():
     st.subheader(f"Final Score: {marks} / {len(questions)}")
 
     try:
-            # Generate ZIP file containing both PDFs
-            zip_buffer = generate_quiz_zip(session.quiz_data)
+        # Generate ZIP file containing both PDFs
+        zip_buffer = generate_quiz_zip(session.quiz_data)
 
-            # Download button for ZIP file
-            st.download_button(
-                label="Download Quiz Files",
-                data=zip_buffer,
-                file_name="quiz_files.zip",
-                mime="application/zip",
-            )
+        # Download button for ZIP file
+        st.download_button(
+            label="Download Quiz Files",
+            data=zip_buffer,
+            file_name="quiz_files.zip",
+            mime="application/zip",
+        )
 
     except Exception as e:
         st.error(f"Error generating PDF: {str(e)}")
@@ -223,6 +223,3 @@ def test_with_topic_interface():
 
     if session.quiz_data["questions"]:
         display_question()
-
-if __name__ == "__main__":
-    test_with_topic_interface()
