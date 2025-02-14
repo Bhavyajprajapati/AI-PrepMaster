@@ -44,12 +44,17 @@ else:
         forget_st_interface()
     elif menu == "Usage guide":
         st.title("Welcom to Ai-prprMaster")
-        st.subheader("How to use")
-        login_time_guide = """
-    <p>
-        <p>1. Signup from sidebar</p>
-        <p>2. Login from sidebar</p>
-    </p>
+        # st.subheader("How to use")
+        login_time_guide = """    
+
+###     🔐 Sign Up / Login
+- **New users**: Click on the **Sign Up** button on the homepage.
+  - Enter your **name, email, and password**.
+  - Verify your email via the confirmation link sent to your inbox.
+  - Once verified, log in with your credentials.
+- **Existing users**: Click **Login**, enter your credentials, and proceed.
+
+
     
     """
         st.markdown(login_time_guide,unsafe_allow_html=True)     
