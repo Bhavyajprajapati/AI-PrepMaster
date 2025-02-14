@@ -209,7 +209,7 @@ def test_with_topic_interface():
     quiz_level = st.selectbox(
         "Select Difficulty:", ["Easy", "Medium", "Hard", "Mix", "BT Based"]
     )
-    number = st.slider("Number of Questions:", 5, 50, 10)
+    number = st.slider("Number of Questions:", 5, 30, 10,5)
     duration = st.slider("Set Quiz Time (minutes):", 1, 30, 10)  # User sets the timer
 
     if st.button("Generate Quiz"):
