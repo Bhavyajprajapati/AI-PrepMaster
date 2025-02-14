@@ -7,6 +7,7 @@ from langchain_experimental.text_splitter import SemanticChunker
 from langchain_pinecone import PineconeVectorStore
 from uuid import uuid4
 from langchain_core.documents import Document
+from home.TestTopic.Pdf import generate_quiz_zip
 
 pinecone_api_key = "pcsk_ffUJz_7hkW8pZMvpf99EXNU1y65SehYwa2nPKSbrtC8SCZX3mqUGPeYahH6gXpae1SNY6"  # Shivam's Api Key For Vector Store
 pinecone_environment = "us-east-1"  
@@ -145,6 +146,20 @@ def auto_submit_quiz():
 
     st.subheader(f"Final Score: {marks} / {len(questions)}")
 
+    try:
+        # Generate ZIP file containing both PDFs
+        zip_buffer = generate_quiz_zip(st.session_state.quiz_data)
+
+        # Download button for ZIP file
+        st.download_button(
+            label="Download Quiz Files",
+            data=zip_buffer,
+            file_name="quiz_files.zip",
+            mime="application/zip",
+        )
+
+    except Exception as e:
+        st.error(f"Error generating PDF: {str(e)}")
     # Reset the quiz state after submission
     st.session_state.quiz_data = {
         "questions": [],
@@ -158,17 +173,15 @@ def auto_submit_quiz():
 def submit_quiz():
     if st.button("Submit Quiz", key="Submit"):
         marks = 0
-        st.header("Quiz Results:")
+        st.header("Submit Quiz Results:")
 
-        questions = st.session_state.quiz_data["questions"]  # Get the list of questions
+        questions = st.session_state.quiz_data["questions"]
 
-        for i, question in enumerate(questions):  # Use enumerate for indexing
-            selected = st.session_state.quiz_data["selected_options"].get(
-                i, "Not Answered"
-            )
+        for i, question in enumerate(questions):
+            selected = st.session_state.quiz_data["selected_options"].get(i, "Not Answered")
             correct = question["Options"].get(question["Correct_option"], "Unknown")
 
-            st.write(f"**{question['Mcq']}**")
+            st.write(f"**{i+1}**" + " :- " + f"**{question['Mcq']}**")
             st.write(f"Your Answer: {selected}")
             st.write(f"Correct Answer: {correct}")
 
@@ -177,12 +190,27 @@ def submit_quiz():
 
         st.subheader(f"Final Score: {marks} / {len(questions)}")
 
+        try:
+            # Generate ZIP file containing both PDFs
+            zip_buffer = generate_quiz_zip(st.session_state.quiz_data)
+
+            # Download button for ZIP file
+            st.download_button(
+                label="Download Quiz Files",
+                data=zip_buffer,
+                file_name="quiz_files.zip",
+                mime="application/zip",
+            )
+
+        except Exception as e:
+            st.error(f"Error generating PDF: {str(e)}")
+
         # Reset the quiz state after submission
         st.session_state.quiz_data = {
             "questions": [],
             "selected_options": {},
-            "submitted": True,
             "time_remaining": 0,
+            "submitted": True,
         }
         st.cache_data.clear()  # Clearing cached data
 
@@ -253,7 +281,7 @@ def ask_topic_for_test():
     quiz_level = st.selectbox(
         "Select Difficulty:", ["Easy", "Medium", "Hard", "Mix(Easy,Medium,Hard)", "Blooms Taxonomy Based"]
     )
-    number = st.slider("Number of Questions:", 5, 30, 10)
+    number = st.slider("Number of Questions:", 5, 30, 10 ,5)
     duration = st.slider("Set Quiz Time (minutes):", 1, 30, 10)  # User sets the timer
 
     if st.button("Generate Quiz"):
