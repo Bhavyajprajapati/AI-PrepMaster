@@ -143,7 +143,7 @@ def omr_checking_interface():
             widthImg = 900
     elif questions == 30:
         heightImg = 3000
-        widthImg = 1400
+        widthImg = 1200
         if choices == 5:   
             heightImg = 3000 
             widthImg = 1400
@@ -252,6 +252,10 @@ def omr_checking_interface():
                                         marked_indices = np.where(row >= max_val - 1500)[0]  # Allow small variations due to noise
                                     else:
                                         marked_indices = np.where(row >= max_val - 800)[0]  # Allow small variations due to noise
+                                elif questions == 30:
+                                    if choices == 4:
+                                        marked_indices = np.where(row >= max_val - 1500)[0]  # Allow small variations due to noise
+     
                                 else:
                                     marked_indices = np.where(row >= max_val - 700)[0]  # Allow small variations due to noise
                                 # print(max_val)
@@ -304,7 +308,7 @@ def omr_checking_interface():
                             
                         
 
-                            st.image(imgWarpColored, caption='Processed OMR Sheet', use_column_width=True)
+                            st.image(imgWarpColored, caption='Processed OMR Sheet', use_container_width=True)
                             
                             # code to transfer colors to main image
                             imgRawDrawing = np.zeros_like(imgWarpColored)
@@ -321,11 +325,11 @@ def omr_checking_interface():
                             
                             if questions == 30:
                                 if choices == 4:
-                                    cv2.putText(imgFinal, f"Score: {(score)}%", (880, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
-                                    cv2.putText(imgFinal, f"Correct: {sum(grading)}/{questions}", (880, 480),cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
+                                    cv2.putText(imgFinal, f"Score: {(score)}%", (740, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
+                                    cv2.putText(imgFinal, f"Correct: {sum(grading)}/{questions}", (740, 480),cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
                                     # cv2.putText(imgFinal, f"wrong: {wrong_count}/{questions}", (550, 310),cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
-                                    cv2.putText(imgFinal, f"Negative Counts: {negative_count}/{questions}", (880, 510),cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
-                                    cv2.putText(imgFinal, f"Not attempted: {not_attended}/{questions}", (880, 540),cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
+                                    cv2.putText(imgFinal, f"Negative Counts: {negative_count}/{questions}", (740, 510),cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
+                                    cv2.putText(imgFinal, f"Not attempted: {not_attended}/{questions}", (740, 540),cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
                                 else:
                                     cv2.putText(imgFinal, f"Score: {(score)}%", (850, 430), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
                                     cv2.putText(imgFinal, f"Correct: {sum(grading)}/{questions}", (850, 460),cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 2)
@@ -420,7 +424,7 @@ def omr_checking_interface():
                     processed_image = imgFinal
                 # processed_images.append((uploaded_file.name, processed_image))
                 processed_images.append(processed_image)
-                st.image(processed_image, caption=f"Processed: image", use_column_width=True, channels="GRAY")
+                st.image(processed_image, caption=f"Processed: image", use_container_width=True, channels="GRAY")
                 # st.image(processed_image, caption=f"Processed: {uploaded_file.name}", use_column_width=True, channels="GRAY")
             status.update(label="Processing complete!", state="complete", expanded=False)  # Finish status
 
