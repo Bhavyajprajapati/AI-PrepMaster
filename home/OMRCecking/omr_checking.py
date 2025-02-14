@@ -433,25 +433,25 @@ def omr_checking_interface():
         
         if processed_images:
             pdf = FPDF()
-            with st.status("Generating pdf...",expanded=True)as status:
-                # for image_name, image in processed_images:
+            
+            with st.status("Generating PDF...", expanded=True) as status:
                 for image in processed_images:
                     # Save the image to a temporary file
                     with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmpfile:
                         cv2.imwrite(tmpfile.name, image)
-                        # Add a page to the PDF
-                        pdf.add_page()
-                        # Add the image to the PDF
-                        pdf.image(tmpfile.name, x=10, y=10, w=190)  # Adjust dimensions as needed
-                        # Optionally, add the image name as a caption
-                        # pdf.set_font("Arial", size=12)
-                        # pdf.cell(200, 10, txt=image_name, ln=True, align="C")
-            status.update(label="Pdf generated!", state="complete", expanded=False)  # Finish status
 
-        # Save the PDF to a BytesIO object
-        pdf_bytes = io.BytesIO()
-        pdf.output(pdf_bytes)
-        pdf_bytes.seek(0)
+                        # Add a new page to the PDF
+                        pdf.add_page()
+
+                        # Insert the image into the PDF
+                        pdf.image(tmpfile.name, x=10, y=10, w=190)  # Adjust dimensions as needed
+
+                status.update(label="PDF generated!", state="complete", expanded=False)
+
+            # Save the PDF to a BytesIO object
+            pdf_bytes = io.BytesIO()
+            pdf_bytes.write(pdf.output())  # Ensure correct output format
+            pdf_bytes.seek(0)  # Reset pointer to the beginning
 
         # Provide a download button for the PDF
         st.download_button(
