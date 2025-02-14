@@ -91,7 +91,7 @@ def display_question():
 
         # Display radio button for options
         selected_option = st.radio(
-            f"Select an answer for Q{q_index + 1}:",
+            f"Select an answer :",
             options=list(question["Options"].values()),  # Extract values only
             key=f"q_{q_index}",  # Unique key per question
             index=None,  # Allow user to choose, but no default selection
