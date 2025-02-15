@@ -16,7 +16,7 @@ def home():
     # st.sidebar.image("media_files/icon.png",width=60)
     st.sidebar.markdown(
         f"""
-        <h1 style="font-size: 35px">Welocme, <strong>{st.session_state['username']}</h1>
+        <h1 style="font-size: 35px">Welcome, <strong>{st.session_state['username']}</h1>
         """,
         unsafe_allow_html = True
     )
