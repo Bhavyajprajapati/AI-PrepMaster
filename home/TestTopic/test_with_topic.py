@@ -81,23 +81,27 @@ def display_question():
 
 
 def submit_quiz():
-    if st.button("Submit Quiz", key="Submit"):
+    if st.button("Submit Test", key="Submit"):
+        st.markdown("## Thank You for Completing the Quiz! 🎉")
+        st.balloons()
         marks = 0
-        st.header("Submit Quiz Results:")
+        st.header("Test Results:")
 
         questions = session.quiz_data["questions"]
+    
+        with st.status("Your result Generating...",expanded=False) as status:
+            for i, question in enumerate(questions):
+                selected = session.quiz_data["selected_options"].get(i, "Not Answered")
+                correct = question["Options"].get(question["Correct_option"], "Unknown")
 
-        for i, question in enumerate(questions):
-            selected = session.quiz_data["selected_options"].get(i, "Not Answered")
-            correct = question["Options"].get(question["Correct_option"], "Unknown")
+                st.write(f"**{i+1}**" + " :- " + f"**{question['Mcq']}**")
+                st.write(f"Your Answer: {selected}")
+                st.write(f"Correct Answer: {correct}")
 
-            st.write(f"**{i+1}**" + " :- " + f"**{question['Mcq']}**")
-            st.write(f"Your Answer: {selected}")
-            st.write(f"Correct Answer: {correct}")
+                if selected == correct:
+                    marks += 1
 
-            if selected == correct:
-                marks += 1
-
+        status.update(label="View Result!", state="complete", expanded=False)
         st.subheader(f"Final Score: {marks} / {len(questions)}")
 
         try:
@@ -106,9 +110,9 @@ def submit_quiz():
 
             # Download button for ZIP file
             st.download_button(
-                label="Download Quiz Files",
+                label="Download Test Files",
                 data=zip_buffer,
-                file_name="quiz_files.zip",
+                file_name="test_files.zip",
                 mime="application/zip",
             )
 
@@ -126,7 +130,7 @@ def submit_quiz():
 
 
 def countdown_timer():
-    """Countdown Timer for Quiz"""
+    """Countdown Timer for Test"""
     if "time_remaining" in session.quiz_data:
         while session.quiz_data["time_remaining"] > 0:
             mins, secs = divmod(session.quiz_data["time_remaining"], 60)
@@ -148,7 +152,7 @@ def auto_submit_quiz():
     st.markdown("## Thank You for Completing the Quiz! 🎉")
     st.balloons()
     marks = 0
-    st.header("Quiz Results:")
+    st.header("Test Results:")
 
     questions = session.quiz_data["questions"]  # Get the list of questions
 
@@ -171,9 +175,9 @@ def auto_submit_quiz():
 
         # Download button for ZIP file
         st.download_button(
-            label="Download Quiz Files",
+            label="Download Test Files",
             data=zip_buffer,
-            file_name="quiz_files.zip",
+            file_name="test_files.zip",
             mime="application/zip",
         )
 
@@ -201,7 +205,7 @@ def test_with_topic_interface():
             "timer": False,
         }
 
-    text_content = st.text_input("Enter Topic for Quiz:")
+    text_content = st.text_input("Enter Topics for Test:",help="Seperated by comma if multiple like Arrays,String in Data structure")
     quiz_level = st.selectbox(
         "Select Difficulty:",
         [
@@ -213,9 +217,9 @@ def test_with_topic_interface():
         ],
     )
     number = st.slider("Number of Questions:", 5, 30, 10, 5)
-    duration = st.slider("Set Quiz Time (minutes):", 1, 30, 10)  # User sets the timer
+    duration = st.slider("Set Test Time (minutes):", 1, 30, 10)  # User sets the timer
 
-    if st.button("Generate Quiz"):
+    if st.button("Generate Test"):
         session.quiz_data["questions"] = fetch_questions(
             text_content, quiz_level, number
         )

@@ -88,7 +88,7 @@ def display_question():
     countdown_timer()
 
 def countdown_timer():
-    """Countdown Timer for Quiz"""
+    """Countdown Timer for Test"""
     if "time_remaining" in st.session_state.quiz_data:
         while st.session_state.quiz_data["time_remaining"] > 0:
             mins, secs = divmod(st.session_state.quiz_data["time_remaining"], 60)
@@ -111,7 +111,7 @@ def auto_submit_quiz():
     st.markdown("## Thank You for Completing the Quiz! 🎉")
     st.balloons()
     marks = 0
-    st.header("Quiz Results:")
+    st.header("Test Results:")
 
     questions = st.session_state.quiz_data["questions"]  # Get the list of questions
 
@@ -154,25 +154,26 @@ def auto_submit_quiz():
     st.cache_data.clear()  # Clearing cached data
 
 def submit_quiz():
-    if st.button("Submit Quiz", key="Submit"):
-        st.markdown("## Thank You for Completing the Quiz! 🎉")
+    if st.button("Submit Test", key="Submit"):
+        st.markdown("## Thank You for Completing the Test! 🎉")
         st.balloons()
         marks = 0
-        st.header("Quiz Results:")
+        st.header("Test Results:")
 
         questions = st.session_state.quiz_data["questions"]
+        
+        with st.status("Your result Generating...",expanded=False) as status:
+            for i, question in enumerate(questions):
+                selected = st.session_state.quiz_data["selected_options"].get(i, "Not Answered")
+                correct = question["Options"].get(question["Correct_option"], "Unknown")
 
-        for i, question in enumerate(questions):
-            selected = st.session_state.quiz_data["selected_options"].get(i, "Not Answered")
-            correct = question["Options"].get(question["Correct_option"], "Unknown")
+                st.write(f"**{i+1}**" + " :- " + f"**{question['Mcq']}**")
+                st.write(f"Your Answer: {selected}")
+                st.write(f"Correct Answer: {correct}")
 
-            st.write(f"**{i+1}**" + " :- " + f"**{question['Mcq']}**")
-            st.write(f"Your Answer: {selected}")
-            st.write(f"Correct Answer: {correct}")
-
-            if selected == correct:
-                marks += 1
-
+                if selected == correct:
+                    marks += 1
+        status.update(label="View Result!", state="complete", expanded=False)
         st.subheader(f"Final Score: {marks} / {len(questions)}")
 
         try:
@@ -212,15 +213,15 @@ def ask_topic_for_test():
             "time_remaining": 0,
         }
 
-    user_query = st.text_input("Enter the topic names which you would like to practice :")
+    user_query = st.text_input("Enter the topic names which you would like to practice :",help="Seperated by comma if multiple like Arrays,String in Data structure")
     quiz_level = st.selectbox(
         "Select Difficulty:", ["Easy", "Medium", "Hard", "Mix(Easy, Medium, Hard)", "Blooms Taxonomy Based(Remember, Understand, Apply)"]
     )
     number = st.slider("Number of Questions:", 5, 30, 10 ,5)
-    duration = st.slider("Set Quiz Time (minutes):", 1, 30, 10)  # User sets the timer
+    duration = st.slider("Set Test Time (minutes):", 1, 30, 10)  # User sets the timer
 
-    if st.button("Generate Quiz"):
-        with st.spinner("Generating Quiz, Please wait..."):
+    if st.button("Generate Test"):
+        with st.spinner("Generating Test, Please wait..."):
             if user_query:
                 results = vector_store.similarity_search(user_query,k=3)
                 global prompt_RAG_text
@@ -239,7 +240,7 @@ def ask_topic_for_test():
                 st.session_state.quiz_data["selected_options"] = {}
                 st.session_state.quiz_data["time_remaining"] = (duration * 60)  # Convert minutes to seconds
             else:
-                st.warning("Please enter a topic to generate a Quiz.")
+                st.warning("Please enter a topic to generate a Test.")
 
             st.rerun()
 
@@ -247,7 +248,7 @@ def test_with_your_material_interface():
     if st.session_state['uploaded_and_analyzed'] and not st.session_state.quiz_data['questions']:
         ask_topic_for_test()
     elif st.session_state['uploaded_and_analyzed'] and st.session_state.quiz_data['questions']:
-        st.warning("Complete you quiz and submit it in given time, Timer is shown below the quiz...")
+        st.warning("Complete you Test and submit it in given time, Timer is shown below the Test...")
     else:
         st.warning("If you not uploaded your Material please go to the upload material section first.")
 

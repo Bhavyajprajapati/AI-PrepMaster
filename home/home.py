@@ -23,8 +23,8 @@ def home():
     with st.sidebar:
         choice = option_menu(
             menu_title="Functionalities",
-            options=['Learn particular topic', 'Test with topics',
-                    'Test with your own material','Upload Your Material','OMR checking','Download OMR','Usage Guide'],
+            options=['Topic Mastery Zone', 'Test With Topics',
+                    'Upload Your Material','Test With Your Own Material','Download OMR','OMR Checking','Usage Guide'],
             menu_icon='none',
             default_index=6,
             styles={
@@ -36,19 +36,19 @@ def home():
 
 
         
-    if choice == "Learn particular topic":
+    if choice == "Topic Mastery Zone":
         learn_particular_topic_interface()
         
-    elif choice == "Test with topics":
+    elif choice == "Test With Topics":
         test_with_topic_interface()
         
-    elif choice == "Test with your own material":
+    elif choice == "Test With Your Own Material":
         test_with_your_material_interface()
         
     elif choice == "Upload Your Material":
         material_uploader_interface()
         
-    elif choice == "OMR checking":
+    elif choice == "OMR Checking":
         omr_checking_interface()
         
     elif choice == "Usage Guide":
