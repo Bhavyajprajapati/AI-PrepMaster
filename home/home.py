@@ -1,19 +1,17 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 
-# files imports
-# here folders(LearnTopic,..) are in same module home then also we have to import it like home.LearnTopic
-# because program is running like it is in our app.py
 from home.LearnTopic.learn_particular_topic import learn_particular_topic_interface
 from home.TestTopic.test_with_topic import test_with_topic_interface
 from home.YourMaterialTopic.test_with_your_material import test_with_your_material_interface
 from home.OMRCecking.omr_checking import omr_checking_interface
 from home.UsageGuide.usage_guide import usage_guide_interface
 from home.SamplePdf.sample_pdf_interface import download_omr_interface 
+from home.MaterialUploader.upload_material import material_uploader_interface
+
 def home():
     st.title("Welcome to AI-PrepMaster")
     
-    # st.sidebar.image("media_files/icon.png",width=60)
     st.sidebar.markdown(
         f"""
         <h1 style="font-size: 35px">Welcome, <strong>{st.session_state['username']}</h1>
@@ -26,10 +24,9 @@ def home():
         choice = option_menu(
             menu_title="Functionalities",
             options=['Learn particular topic', 'Test with topics',
-                    'Test with your own material','OMR checking','Download OMR','Usage Guide'],
-            # icons=['person-circle',]
+                    'Test with your own material','Upload Your Material','OMR checking','Download OMR','Usage Guide'],
             menu_icon='none',
-            default_index=5,
+            default_index=6,
             styles={
                 "container": {"padding": "5!important","background-color":'black'},
     "icon": {"color": "white", "font-size": "23px"}, 
@@ -48,7 +45,8 @@ def home():
     elif choice == "Test with your own material":
         test_with_your_material_interface()
         
-    
+    elif choice == "Upload Your Material":
+        material_uploader_interface()
         
     elif choice == "OMR checking":
         omr_checking_interface()
@@ -65,5 +63,3 @@ def home():
         st.session_state["page"] = "Login"
         st.session_state['uploaded_and_analyzed'] = False
         st.rerun()
-
-        

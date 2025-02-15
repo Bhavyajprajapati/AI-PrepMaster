@@ -51,12 +51,7 @@ def fetch_questions(text_content, quiz_level, number):
         model = genai.GenerativeModel(model_name)
         response = model.generate_content(PROMPT)
         res = response.text
-
-        # res = chat_completion.choices[0].message.content
-        # st.write(f"Response : {res}")
         cleaned_res = extract_json(res).get("MCQS", [])
-        # st.write(f"Cleaned text: {cleaned_res}")
-        # return cleaned_res
         return cleaned_res[:number] if len(cleaned_res) > number else cleaned_res
     except BaseException as e:
         return print("API Error!" + str(e)), 399
@@ -138,7 +133,7 @@ def countdown_timer():
             st.subheader(f"⏳ Time Remaining: {mins}:{secs:02d}")
 
             time.sleep(1)  # Wait for 1 second
-            session.quiz_data["time_remaining"] -= 1
+            session.quiz_data["time_remaining"] -= 2
             st.rerun()  # Rerun Streamlit app to update timer
 
         # Auto-submit the quiz when time is up
@@ -229,5 +224,5 @@ def test_with_topic_interface():
             duration * 60
         )  # Convert minutes to seconds
 
-    if session.quiz_data["questions"]:
+    if session.quiz_data["questions"] and not session.quiz_data.get("submitted",False):
         display_question()
