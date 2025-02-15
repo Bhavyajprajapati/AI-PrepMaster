@@ -56,7 +56,7 @@ def generate_embedding(text):
 
 def upload_pdf():
     text = upload_and_analyze()
-    if st.button("Confirm Upload"):
+    if text:
         with st.spinner("Your Pdf is being analyzed, Please Wait..."):
             generate_embedding(text)
 

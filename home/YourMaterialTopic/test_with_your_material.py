@@ -246,7 +246,7 @@ def ask_topic_for_test():
     if st.button("Generate Test"):
         with st.spinner("Generating Test, Please wait..."):
             if user_query:
-                results = vector_store.similarity_search(user_query, k=3)
+                results = vector_store.similarity_search(user_query, k=5)
                 global prompt_RAG_text
                 prompt_RAG_text = ""
                 for res in results:
