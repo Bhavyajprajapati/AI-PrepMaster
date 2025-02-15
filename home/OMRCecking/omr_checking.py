@@ -446,7 +446,7 @@ def omr_checking_interface():
                         # Insert the image into the PDF
                         pdf.image(tmpfile.name, x=10, y=10, w=190)  # Adjust dimensions as needed
 
-                status.update(label="PDF generated!", state="complete", expanded=False)
+            status.update(label="PDF generated!", state="complete", expanded=False)
 
             # Save the PDF to a BytesIO object
             pdf_bytes = io.BytesIO()

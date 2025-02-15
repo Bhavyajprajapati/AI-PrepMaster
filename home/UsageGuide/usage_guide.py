@@ -12,15 +12,15 @@ def usage_guide_interface():
     # """
     # st.markdown(usage,unsafe_allow_html=True)
     
-    usage_options=['Learn particular topic', 'Test with topics',
-                    'Test with your own material','OMR checking']
+    usage_options=['Topic Mastery Zone', 'Test With Topics',
+                    'Test With Your Own Material','OMR Checking']
     
     
     selected_usage_option = st.selectbox("Require guide for:",usage_options,index=0)
     
-    if selected_usage_option == "Learn particular topic":
+    if selected_usage_option == "Topic Mastery Zone":
         content = """
-            ## 📘 User Guide for Topic Mastery zone
+            ## 📘 User Guide for Topic Mastery Zone
 
 ## ✨ Introduction
 Welcome to **Ai-prepMaster**, your interactive learning companion! This guide provides step-by-step instructions on how to use the platform to generate topic-based educational content, save responses, and download them in various formats.
@@ -66,7 +66,7 @@ Welcome to **Ai-prepMaster**, your interactive learning companion! This guide pr
         """
         st.markdown(content,unsafe_allow_html=True)
     
-    elif selected_usage_option == "OMR checking":
+    elif selected_usage_option == "OMR Checking":
         
         content = """
             ## 📘 User guide for OMR Checking
@@ -122,9 +122,9 @@ By following these steps and guidelines, users can efficiently process OMR sheet
 
         """
         st.markdown(content,unsafe_allow_html=True)
-    elif selected_usage_option == "Test with topics":
+    elif selected_usage_option == "Test With Topics":
         content = """
-        ## 📘 User Guide for MCQ Test Generation
+        ## 📘 User Guide for MCQ Test Generation With Topics
 
 ## ✨ Introduction
 
@@ -195,9 +195,9 @@ For assistance, contact 📧 AipreapMaster@gmail.com.
 
         """
         st.markdown(content,unsafe_allow_html=True)
-    elif selected_usage_option == "Test with your own material":
+    elif selected_usage_option == "Test With Your Own Material":
         content="""
-        ## 📘 User Guide for MCQ Test Generation from your own material
+        ## 📘 User Guide for Test With Your Own Material
 
 ## ✨ Introduction
 
