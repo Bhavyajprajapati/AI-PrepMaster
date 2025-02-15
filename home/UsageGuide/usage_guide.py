@@ -33,7 +33,7 @@ Welcome to **Ai-prepMaster**, your interactive learning companion! This guide pr
 
 ## 📖 How to Use
 
-#### Open the **Topic mastery zone 🚀** from sidebar.
+#### 📌 Open the **Topic mastery zone** from sidebar.
 ### 1️⃣ Enter a Topic to Learn
 -  Enter a topic of interest in the input field.
 -  Click the **Learn** button to generate a structured response.
@@ -56,7 +56,7 @@ Welcome to **Ai-prepMaster**, your interactive learning companion! This guide pr
 -  Verify your internet connection.
 -  Ensure the service is operational.
 -  Try simplifying your topic input.
-
+-  For assistance, contact 📧 AipreapMaster@gmail.com.
 ## 🎯 Conclusion
 **Ai-prepMaster** is a powerful tool for structured learning and document generation. Explore various topics and save your knowledge effortlessly! 🚀
 
@@ -69,15 +69,15 @@ Welcome to **Ai-prepMaster**, your interactive learning companion! This guide pr
     elif selected_usage_option == "OMR checking":
         
         content = """
-            ### 📘 User guide for OMR Checking
+            ## 📘 User guide for OMR Checking
 
 ## 🌟 Introduction
 Welcome to our OMR Processing section! This section allows users to generate and evaluate OMR sheets efficiently. Follow the steps below to ensure accurate processing.
 
 ## 🚀 Steps to Use
-
+#### 📌 Open the download thesample pdf from the sidebar
 ### 1️⃣ Download Sample PDF
-- Download the sample PDF from the sidebar according to your requirement.
+- According to your requirement download OME sheet.
 
 ### 2️⃣ Create Your Question Paper
 You have two options:
@@ -124,7 +124,7 @@ By following these steps and guidelines, users can efficiently process OMR sheet
         st.markdown(content,unsafe_allow_html=True)
     elif selected_usage_option == "Test with topics":
         content = """
-        # 📘 User Guide for MCQ Test Generation
+        ## 📘 User Guide for MCQ Test Generation
 
 ## ✨ Introduction
 
@@ -142,7 +142,7 @@ Welcome to **AI-PrepMaster**, your smart MCQ test generator! This guide will hel
 ---
 
 ## 📖 How to Use
-#### Open the **Test with topic** from sidebar.
+#### 📌 Open the **Test with topic** from sidebar.
 ### 1️⃣ Select a Topic
 
 - Choose a topic from the available list or enter your own.
@@ -190,8 +190,8 @@ Welcome to **AI-PrepMaster**, your smart MCQ test generator! This guide will hel
 
 ## 🎯 Conclusion
 
-With **AI-PrepMaster**, you can efficiently test your knowledge, track your performance, and download structured reports. Start mastering topics today! 🚀
-
+With **AI-PrepMaster**, you can efficiently test your knowledge, track your performance, and download structured reports. Start mastering topics today!
+For assistance, contact 📧 AipreapMaster@gmail.com.
 
         """
         st.markdown(content,unsafe_allow_html=True)
@@ -215,15 +215,19 @@ Welcome to **AI-PrepMaster**, your smart MCQ test generator! This guide will hel
 ---
 
 ## 📖 How to Use
-#### Open the **Test with your own material🚀** from sidebar.
+#### 📌 Open the **Upload your material** from sidebar.
 ### 1️⃣ Upload Your Study Material
 
 - Click **Upload PDF** and select your document.
 - File size must be less than 10Mb.
-- Click **Generate Test** to proceed.
+- Click **Confirm upload** to proceed.
+- It will proccess your pdf 
+- If you want to upload another pdf then you can click want to upload another pdf
+- Only after pdf uploaded and processed you can test with it. 
 
 ### 2️⃣ Configure Test Settings
-
+#### 📌 Now open the **Test with your material** from sidebar.
+- Enter the topics from which you want to generate MCQs only from your pdf.
 - Select the **number of questions**.
 - Set a **time limit** for completion.
 - Choose the **difficulty level**:
@@ -265,7 +269,7 @@ Welcome to **AI-PrepMaster**, your smart MCQ test generator! This guide will hel
 
 ## 🎯 Conclusion
 
-With **AI-PrepMaster**, you can efficiently generate tests from your own study material, track your performance, and download structured reports. Start mastering topics today! 🚀
-
+With **AI-PrepMaster**, you can efficiently generate tests from your own study material, track your performance, and download structured reports. Start mastering topics today!
+For assistance, contact 📧 AipreapMaster@gmail.com.
 """
         st.markdown(content,unsafe_allow_html=True)
