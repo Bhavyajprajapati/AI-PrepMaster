@@ -33,7 +33,7 @@ Welcome to **Ai-prepMaster**, your interactive learning companion! This guide pr
 
 ## 📖 How to Use
 
-#### Open the **Topic mastery zone 🚀** from sidebar.
+#### 📌 Open the **Topic mastery zone** from sidebar.
 ### 1️⃣ Enter a Topic to Learn
 -  Enter a topic of interest in the input field.
 -  Click the **Learn** button to generate a structured response.
@@ -56,7 +56,7 @@ Welcome to **Ai-prepMaster**, your interactive learning companion! This guide pr
 -  Verify your internet connection.
 -  Ensure the service is operational.
 -  Try simplifying your topic input.
-
+-  For assistance, contact 📧 AipreapMaster@gmail.com.
 ## 🎯 Conclusion
 **Ai-prepMaster** is a powerful tool for structured learning and document generation. Explore various topics and save your knowledge effortlessly! 🚀
 
@@ -69,15 +69,15 @@ Welcome to **Ai-prepMaster**, your interactive learning companion! This guide pr
     elif selected_usage_option == "OMR checking":
         
         content = """
-            ### 📘 User guide for OMR Checking
+            ## 📘 User guide for OMR Checking
 
 ## 🌟 Introduction
 Welcome to our OMR Processing section! This section allows users to generate and evaluate OMR sheets efficiently. Follow the steps below to ensure accurate processing.
 
 ## 🚀 Steps to Use
-
+#### 📌 Open the download thesample pdf from the sidebar
 ### 1️⃣ Download Sample PDF
-- Download the sample PDF from the sidebar according to your requirement.
+- According to your requirement download OME sheet.
 
 ### 2️⃣ Create Your Question Paper
 You have two options:
@@ -121,4 +121,155 @@ For assistance, contact **📧 AipreapMaster@gmail.com**.
 By following these steps and guidelines, users can efficiently process OMR sheets with accurate results. If you encounter any issues, refer to the troubleshooting section or reach out to support. Happy evaluating!
 
         """
+        st.markdown(content,unsafe_allow_html=True)
+    elif selected_usage_option == "Test with topics":
+        content = """
+        ## 📘 User Guide for MCQ Test Generation
+
+## ✨ Introduction
+
+Welcome to **AI-PrepMaster**, your smart MCQ test generator! This guide will help you navigate through the test creation process, customize your quiz settings, and download results efficiently.
+
+## 🌟 Features
+
+- Select a topic for your MCQ test.
+- Choose the **number of questions** for the test.
+- Set a **time limit** for the test.
+- Select a **difficulty level**:
+- Instant result evaluation with correct answers.
+- **Downloadable PDFs** in multiple formats.
+
+---
+
+## 📖 How to Use
+#### 📌 Open the **Test with topic** from sidebar.
+### 1️⃣ Select a Topic
+
+- Choose a topic from the available list or enter your own.
+- Click **Generate Test** to proceed.
+
+### 2️⃣ Configure Test Settings
+
+- Select the **number of questions**.
+- Set a **time limit** for completion.
+- Choose the **difficulty level**:
+  - Easy, Medium, Hard, Mix
+  - BT-Based (Remember, Understand, Apply)
+
+### 3️⃣ Start the Test
+
+- Click **Start Test**.
+- Answer the MCQs. You can leave a question blank if unsure.
+- The test can be submitted using submit button at bottom or it will **automatically submits** when the timer runs out.
+
+### 4️⃣ Submission and Instant Results
+
+- After submission, you receive **instant feedback**:
+  - Correct answers are displayed.
+  - You can download all the files at same time in zip format by clicking download files button.
+
+### 5️⃣ Download Results
+
+- you will get the following PDFs in zip:
+  1. **quiz\_answer.pdf** – Contains only the correct answers.
+  2. **quiz\_with\_response.pdf** – Highlights your selected answers:
+     - **Green**: Correct
+     - **Red**: Incorrect
+     - **Yellow highlight**: Correct answer
+  3. **quiz\_question.pdf** – Contains only the test questions.
+  4. **answer\_key.txt** – Provides an answer key for reference.
+- You can use the files 3 and 4 for conducting OMR test.
+---
+
+## 🛠️ Future Updates
+
+- Multiple-mark questions will be available soon!
+- More customization options for test settings like negative marking will be also added.
+
+---
+
+## 🎯 Conclusion
+
+With **AI-PrepMaster**, you can efficiently test your knowledge, track your performance, and download structured reports. Start mastering topics today!
+For assistance, contact 📧 AipreapMaster@gmail.com.
+
+        """
+        st.markdown(content,unsafe_allow_html=True)
+    elif selected_usage_option == "Test with your own material":
+        content="""
+        ## 📘 User Guide for MCQ Test Generation from your own material
+
+## ✨ Introduction
+
+Welcome to **AI-PrepMaster**, your smart MCQ test generator! This guide will help you navigate through the test creation process, customize your quiz settings, and download results efficiently.
+
+## 🌟 Features
+
+- **Upload your own PDF material** to generate an MCQ test.
+- Choose the **number of questions** for the test.
+- Set a **time limit** for the test.
+- Select a **difficulty level**:
+- Instant result evaluation with correct answers.
+- **Downloadable PDFs** in multiple formats.
+
+---
+
+## 📖 How to Use
+#### 📌 Open the **Upload your material** from sidebar.
+### 1️⃣ Upload Your Study Material
+
+- Click **Upload PDF** and select your document.
+- File size must be less than 10Mb.
+- Click **Confirm upload** to proceed.
+- It will proccess your pdf 
+- If you want to upload another pdf then you can click want to upload another pdf
+- Only after pdf uploaded and processed you can test with it. 
+
+### 2️⃣ Configure Test Settings
+#### 📌 Now open the **Test with your material** from sidebar.
+- Enter the topics from which you want to generate MCQs only from your pdf.
+- Select the **number of questions**.
+- Set a **time limit** for completion.
+- Choose the **difficulty level**:
+  - Easy, Medium, Hard, Mix
+  - BT-Based (Remember, Understand, Apply)
+
+### 3️⃣ Start the Test
+
+- Click **Start Test**.
+- Answer the MCQs. You can leave a question blank if unsure.
+- The test can be submitted using the **Submit** button at the bottom or it will **automatically submit** when the timer runs out.
+
+### 4️⃣ Submission and Instant Results
+
+- After submission, you receive **instant feedback**:
+  - Correct answers are displayed.
+  - You can download all the files at the same time in **ZIP format** by clicking the **Download Files** button.
+
+### 5️⃣ Download Results
+
+- You will get the following PDFs in a ZIP file:
+  1. **quiz\_answer.pdf** – Contains only the correct answers.
+  2. **quiz\_with\_response.pdf** – Highlights your selected answers:
+     - **Green**: Correct
+     - **Red**: Incorrect
+     - **Yellow highlight**: Correct answer
+  3. **quiz\_question.pdf** – Contains only the test questions.
+  4. **answer\_key.txt** – Provides an answer key for reference.
+- You can use files 3 and 4 for conducting an **OMR test**.
+
+---
+
+## 🛠️ Future Updates
+
+- Multiple-mark questions will be available soon!
+- More customization options for test settings like negative marking will be added.
+
+---
+
+## 🎯 Conclusion
+
+With **AI-PrepMaster**, you can efficiently generate tests from your own study material, track your performance, and download structured reports. Start mastering topics today!
+For assistance, contact 📧 AipreapMaster@gmail.com.
+"""
         st.markdown(content,unsafe_allow_html=True)
