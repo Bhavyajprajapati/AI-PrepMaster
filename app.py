@@ -2,13 +2,15 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 # files imports
-from home.config import APP_CONFIG
+from home.config import config_set
 from login.auth import login_st_interface, signup_st_interface, forget_st_interface
 from home.home import home
 from home.UsageGuide.usage_guide import usage_guide_interface
 
-#st.set_page_config(**APP_CONFIG)
-
+if "st_config_set" not in st.session_state:
+    config_set()
+    st.session_state["st_config_set"] = True
+    
 # Session Management
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False

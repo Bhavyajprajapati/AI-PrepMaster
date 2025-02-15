@@ -20,26 +20,46 @@ def usage_guide_interface():
     
     if selected_usage_option == "Learn particular topic":
         content = """
-## 📘 User Manual for Learning Assistance Feature
-### Step 1: 📝 Enter a Topic
-- Navigate to the **Learn** section on the website.
-- Enter the study-related topic you want to learn.
-- Click the **Learn** button to generate relevant learning material.
+            ## 📘 User Guide for Topic Mastery zone
 
-### Step 2: 📄 Download Learning Material
-- After the content is displayed, you can download it as a PDF.
-- Click the **Download** button at the end of the page to save the material for offline use.
+## ✨ Introduction
+Welcome to **Ai-prepMaster**, your interactive learning companion! This guide provides step-by-step instructions on how to use the platform to generate topic-based educational content, save responses, and download them in various formats.
 
-## ⚠️ Constraints & Guidelines
-- **Ensure Proper Topic Entry**: Enter a **clear and concise topic** to get the best results.
-- **Study-Related Topics Only**: The system is optimized for academic and educational topics.
+## 🌟 Features
+-  Generate detailed explanations for any topic.
+-  Response according to prviously enterd topic.
+-  Convert responses into **📄 PDF** and **📝 Word documents** for offline use.
+-  Interactive UI for a seamless learning experience.
 
-For assistance, contact **📧 AipreapMaster@gmail.com**.
+## 📖 How to Use
 
----
+#### Open the **Topic mastery zone 🚀** from sidebar.
+### 1️⃣ Enter a Topic to Learn
+-  Enter a topic of interest in the input field.
+-  Click the **Learn** button to generate a structured response.
+
+### 2️⃣ Reviewing the Generated Response
+-  The application displays detailed educational content based on the topic entered.
+-  If previous topics were generated, they will be shown in the **communication history**.
+
+### 3️⃣ Generating and Downloading Documents
+-  Click **Generate PDF** to save the conversation as a PDF.
+-  Click **Generate Word Document** to download it as a DOCX file.
+-  The files are automatically formatted for easy reading and printing.
+
+### 4️⃣ Continue Learning
+-  Click **Next Input** to enter a new topic and continue learning.
+
+
+## 🛠️ Troubleshooting
+##### Issue: No Response Generated
+-  Verify your internet connection.
+-  Ensure the service is operational.
+-  Try simplifying your topic input.
 
 ## 🎯 Conclusion
-By following these steps and guidelines, users can efficiently process OMR sheets and learn about various study topics. If you encounter any issues, refer to the troubleshooting section or reach out to support. Happy learning & evaluating!
+**Ai-prepMaster** is a powerful tool for structured learning and document generation. Explore various topics and save your knowledge effortlessly! 🚀
+
 
 
     
@@ -49,39 +69,39 @@ By following these steps and guidelines, users can efficiently process OMR sheet
     elif selected_usage_option == "OMR checking":
         
         content = """
-            ### 📘 User Manual for OMR Checking
+            ### 📘 User guide for OMR Checking
 
 ## 🌟 Introduction
 Welcome to our OMR Processing section! This section allows users to generate and evaluate OMR sheets efficiently. Follow the steps below to ensure accurate processing.
 
 ## 🚀 Steps to Use
 
-### Step 1: 📥 Download Sample PDF
+### 1️⃣ Download Sample PDF
 - Download the sample PDF from the sidebar according to your requirement.
 
-### Step 2: ✍️ Create Your Question Paper
+### 2️⃣ Create Your Question Paper
 You have two options:
 1. **Create your own question paper** manually.
 2. **Use our services from sidbar**:
    - Generate a test based on a topic or upload your own material.
    - You will receive a **question paper, answer key for OMR checking, and solution** for the paper.
 
-### Step 3: 📤 Upload Your OMR Sheets
+### 3️⃣ Upload Your OMR Sheets
 - Navigate to the **OMR Checking** section.
 - Upload your **filled OMR sheets** (images or PDFs).
 - You can upload a mix of images and PDFs.
 - Ensure that the images are **clear**, with no **shadows** over the OMR.
 
-### Step 4: 🔢 Select Evaluation Criteria
+### 4️⃣ Select Evaluation Criteria
 - Enter the **number of questions**, **negative marking count**, and **number of options** per question.
 
-### Step 5: 📌 Provide Answer Key
+### 5️⃣ Provide Answer Key
 - **If using our generated question paper**: Simply paste the **provided answer key**.
 - **If checking your own paper**: Enter the correct answers separated by commas (e.g., **A,B,C**). Ensure:
   - All answers are in **capital letters**.
   - The answers match the selected **number of options**.
 
-### Step 6: ✅ Click Check
+### 6️⃣ Click Check
 - Click the **Check** button to start processing.
 - The system will evaluate all **pages of PDFs and images**.
 - A **live panel** will display real-time processing updates.
@@ -91,7 +111,7 @@ You have two options:
 - **Image & PDF Quality**: Ensure clarity, no shadows, and proper alignment.
 - **OMR Format**: Use only **predefined templates provided by us**.
 - **Filling Instructions**: Use a **black or blue pen** and fully mark bubbles.
-- **File Size Limit**: Maximum **10 MB** per file.
+- **File Size Limit**: Maximum **30 MB** per file.
 
 For assistance, contact **📧 AipreapMaster@gmail.com**.
 
