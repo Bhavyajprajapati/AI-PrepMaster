@@ -25,7 +25,7 @@ def extract_json(response_text):
 
 def fetch_questions(text_content, quiz_level, number):
     PROMPT = f"""
-        Extract {number} of  MCQs from the following text :\n{text_content}\n
+        Extract {number + 10} of  MCQs from the following text :\n{text_content}\n
         for level {quiz_level} also
         Generate response with the following JSON format: 
         {{"MCQS": 
@@ -54,9 +54,10 @@ def fetch_questions(text_content, quiz_level, number):
 
         # res = chat_completion.choices[0].message.content
         # st.write(f"Response : {res}")
-        cleaned_res = extract_json(res)
+        cleaned_res = extract_json(res).get("MCQS", [])
         # st.write(f"Cleaned text: {cleaned_res}")
-        return cleaned_res.get("MCQS", [])
+        # return cleaned_res
+        return cleaned_res[:number] if len(cleaned_res) > number else cleaned_res
     except BaseException as e:
         return print("API Error!" + str(e)), 399
 
@@ -207,9 +208,16 @@ def test_with_topic_interface():
 
     text_content = st.text_input("Enter Topic for Quiz:")
     quiz_level = st.selectbox(
-        "Select Difficulty:", ["Easy", "Medium", "Hard", "Mix", "BT Based"]
+        "Select Difficulty:",
+        [
+            "Easy",
+            "Medium",
+            "Hard",
+            "Mix(Easy, Medium, Hard)",
+            "Blooms Taxonomy Based(Remember, Understand, Apply)",
+        ],
     )
-    number = st.slider("Number of Questions:", 5, 30, 10,5)
+    number = st.slider("Number of Questions:", 5, 30, 10, 5)
     duration = st.slider("Set Quiz Time (minutes):", 1, 30, 10)  # User sets the timer
 
     if st.button("Generate Quiz"):
