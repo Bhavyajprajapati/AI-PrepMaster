@@ -19,7 +19,7 @@ numpy
 fpdf2
 pymupdf
 pillow
-zipfile
+zipfile36
 markdown2
 pdfkit
 python-docx
