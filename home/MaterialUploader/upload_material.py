@@ -11,7 +11,7 @@ pinecone_environment = "us-east-1"
 pinecone_index_name = "example-index"
 pc = pinecone.Pinecone(api_key=pinecone_api_key)
 model_id = "sentence-transformers/all-MiniLM-L6-v2"
-hf_token = "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"
+hf_token = "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"
 
 def upload_and_analyze():
     uploaded_file = st.file_uploader("Upload the PDF file only",type=['pdf'])

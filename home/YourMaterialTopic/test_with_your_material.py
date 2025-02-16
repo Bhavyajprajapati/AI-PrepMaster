@@ -14,7 +14,7 @@ pinecone_index_name = "example-index"
 pc = pinecone.Pinecone(api_key=pinecone_api_key)
 
 model_id = "sentence-transformers/all-MiniLM-L6-v2"
-hf_token = "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"  ## Shivam's Write API for HF
+hf_token = "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"  ## Shivam's Write API for HF
 
 embeddings_model = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
