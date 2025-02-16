@@ -15,5 +15,5 @@ def config_set():
         }
     }
     st.set_page_config(**APP_CONFIG)
-
+   
 

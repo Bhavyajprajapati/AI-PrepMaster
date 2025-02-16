@@ -17,11 +17,30 @@ if "logged_in" not in st.session_state:
 if "page" not in st.session_state:
     st.session_state["page"] = "Login"
 
+hide_menu ="""
+    <style>
+    #MainMenu{
+        //visibility:hidden;
+    }
+    //.stAppToolbar{
+    //    visibility:hidden;
+
+    //}
+    .stToolbarActions{
+        visibility:hidden;
+        color:red;
+    }
+    .stStatusWidget{
+        visibility:hidden;
+    }
+    </style>
+    """
+st.markdown(hide_menu,unsafe_allow_html=True)
+
 # Routing
 if st.session_state["logged_in"]:
     home()
 else:
-
     with st.sidebar:
         menu = option_menu(
             menu_title='AI-PrepMaster',

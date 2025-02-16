@@ -1,6 +1,13 @@
 import streamlit as st
 from login.database import users_collection
 from login.utils import hash_password, verify_password
+import json
+from streamlit_lottie import st_lottie
+
+@st.cache_data  # Caching the animation
+def load_lottiefile(filepath: str):
+    with open(filepath,"r") as f:
+        return json.load(f)
 
 def signup(email, username, password, favorite_person):
     if users_collection.find_one({"email": email}):
@@ -37,7 +44,18 @@ def login_st_interface():
     st.markdown("""
         <h3 style='text-align:center;'>Ai-PreapMaster</h3>            
         """,unsafe_allow_html=True)
-    st.image("media_files/home_img_new.png",use_container_width=True)
+    # st.image("media_files/home_img_new.png",use_container_width=True)
+    lattie_ani = load_lottiefile("animation_login.json")
+    st_lottie(
+        lattie_ani,
+        speed = 1,
+        reverse=False,
+        loop=True,
+        quality="high",
+        height=310,
+        width = None,
+        key="loattie_animation",
+    )
     st.markdown("""
         <p style='font-size:18px; text-align:center'>
         Want to learn, why wait? just login and <strong style='color:dodgerblue'>Get Started!<strong></p>
