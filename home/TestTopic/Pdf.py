@@ -2,7 +2,7 @@ from fpdf import FPDF
 from datetime import datetime
 import streamlit as st
 import io
-import zipfile
+import zipfile36 as zipfile  # Changed to use zipfile36
 
 
 class QuizPDFGenerator(FPDF):
@@ -144,7 +144,6 @@ class QuizPDFGenerator(FPDF):
 
 def generate_all_quiz_pdfs(quiz_data):
     """Generate three separate PDFs for questions, answers, and user responses."""
-
     # Generate questions-only PDF
     pdf_questions = QuizPDFGenerator()
     pdf_questions.create_title("Quiz Questions")
@@ -212,7 +211,6 @@ def generate_all_quiz_pdfs(quiz_data):
             new_y="NEXT",
         )
 
-    # Return the PDF outputs directly as bytes without additional encoding
     return {
         "questions": pdf_questions.output(dest="S"),
         "answers": pdf_answers.output(dest="S"),
@@ -231,17 +229,13 @@ def generate_answer_key_text(quiz_data):
 def generate_quiz_zip(quiz_data):
     """Generate a ZIP file containing all three PDFs and the answer key text file."""
     pdfs = generate_all_quiz_pdfs(quiz_data)
-
-    # Generate answer key text
     answer_key_text = generate_answer_key_text(quiz_data)
 
     zip_buffer = io.BytesIO()
-    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
-        # Write PDFs directly as bytes
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:  # Using zipfile36
         zip_file.writestr("quiz_questions.pdf", pdfs["questions"])
         zip_file.writestr("quiz_answers.pdf", pdfs["answers"])
         zip_file.writestr("quiz_with_responses.pdf", pdfs["user_responses"])
-        # Encode the answer key text as bytes
         zip_file.writestr("answer_key.txt", answer_key_text.encode("utf-8"))
 
     zip_buffer.seek(0)
