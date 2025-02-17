@@ -110,70 +110,107 @@ def countdown_timer():
 
 
 def auto_submit_quiz():
-    if "quiz_data" in st.session_state and st.session_state["quiz_data"].get("submitted", False):
-        return  # Prevent double submission
+    """Automatically submits the quiz when the timer runs out"""
+    st.session_state.quiz_data["submitted"] = True
+    st.session_state.quiz_data["time_remaining"] = 0  # Reset Timer
 
-    # Proceed with auto-submission logic
-    st.session_state["quiz_data"]["submitted"] = True
-    show_quiz_results()  # Directly show results after auto-submit
-
-
-def submit_quiz():
-    if st.button("Submit Test", key="Submit"):
-        st.session_state["quiz_data"]["submitted"] = True
-        show_quiz_results()
-
-
-def show_quiz_results():
-    """Function to display quiz results after submission."""
+    # Show thank you message
     st.markdown("## Thank You for Completing the Quiz! 🎉")
     st.balloons()
     marks = 0
     st.header("Test Results:")
 
-    questions = st.session_state["quiz_data"]["questions"]
+    questions = st.session_state.quiz_data["questions"]  # Get the list of questions
 
     with st.status("Your result Generating...", expanded=False) as status:
         for i, question in enumerate(questions):
-            selected = st.session_state["quiz_data"]["selected_options"].get(i, "Not Answered")
+            selected = st.session_state.quiz_data["selected_options"].get(
+                i, "Not Answered"
+            )
             correct = question["Options"].get(question["Correct_option"], "Unknown")
 
-            st.write(f"**{i+1}** :- **{question['Mcq']}**")
+            st.write(f"**{i+1}**" + " :- " + f"**{question['Mcq']}**")
             st.write(f"Your Answer: {selected}")
             st.write(f"Correct Answer: {correct}")
 
             if selected == correct:
                 marks += 1
-
     status.update(label="View Result!", state="complete", expanded=False)
     st.subheader(f"Final Score: {marks} / {len(questions)}")
 
     try:
         # Generate ZIP file containing both PDFs
-        zip_buffer = generate_quiz_zip(st.session_state["quiz_data"])
+        zip_buffer = generate_quiz_zip(st.session_state.quiz_data)
 
         # Download button for ZIP file
         st.download_button(
-            label="Download Test Files",
+            label="Download Quiz Files",
             data=zip_buffer,
-            file_name="test_files.zip",
+            file_name="quiz_files.zip",
             mime="application/zip",
         )
 
     except Exception as e:
         st.error(f"Error generating PDF: {str(e)}")
-
     # Reset the quiz state after submission
-    st.session_state["quiz_data"] = {
+    st.session_state.quiz_data = {
         "questions": [],
         "selected_options": {},
-        "time_remaining": 0,
         "submitted": True,
+        "time_remaining": 0,
     }
+    st.cache_data.clear()  # Clearing cached data
 
-    # Clear cached data if caching is used
-    st.cache_data.clear()
-    
+
+def submit_quiz():
+    if st.button("Submit Test", key="Submit"):
+        st.markdown("## Thank You for Completing the Test! 🎉")
+        st.balloons()
+        marks = 0
+        st.header("Test Results:")
+
+        questions = st.session_state.quiz_data["questions"]
+
+        with st.status("Your result Generating...", expanded=False) as status:
+            for i, question in enumerate(questions):
+                selected = st.session_state.quiz_data["selected_options"].get(
+                    i, "Not Answered"
+                )
+                correct = question["Options"].get(question["Correct_option"], "Unknown")
+
+                st.write(f"**{i+1}**" + " :- " + f"**{question['Mcq']}**")
+                st.write(f"Your Answer: {selected}")
+                st.write(f"Correct Answer: {correct}")
+
+                if selected == correct:
+                    marks += 1
+        status.update(label="View Result!", state="complete", expanded=False)
+        st.subheader(f"Final Score: {marks} / {len(questions)}")
+
+        try:
+            # Generate ZIP file containing both PDFs
+            zip_buffer = generate_quiz_zip(st.session_state.quiz_data)
+
+            # Download button for ZIP file
+            st.download_button(
+                label="Download Quiz Files",
+                data=zip_buffer,
+                file_name="quiz_files.zip",
+                mime="application/zip",
+            )
+
+        except Exception as e:
+            st.error(f"Error generating PDF: {str(e)}")
+
+        # Reset the quiz state after submission
+        st.session_state.quiz_data = {
+            "questions": [],
+            "selected_options": {},
+            "time_remaining": 0,
+            "submitted": True,
+        }
+        st.cache_data.clear()  # Clearing cached data
+
 
 def ask_topic_for_test():
     embeddings = HuggingFaceEndpointEmbeddings(
@@ -181,6 +218,7 @@ def ask_topic_for_test():
     )
     index = pc.Index(pinecone_index_name)
     vector_store = PineconeVectorStore(index=index, embedding=embeddings)
+    st.subheader("Test With Your Own Materials")
 
     if "quiz_data" not in st.session_state:
         st.session_state.quiz_data = {
@@ -191,7 +229,7 @@ def ask_topic_for_test():
 
     user_query = st.text_input(
         "Enter the topic names which you would like to practice :",
-        help="Seperated by comma if multiple like Arrays,String in Data structure",
+        help="Separated by comma if multiple like Arrays,String in Data structure",
     )
     quiz_level = st.selectbox(
         "Select Difficulty:",
