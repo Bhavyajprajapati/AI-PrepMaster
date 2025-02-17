@@ -101,10 +101,10 @@ def auto_submit_quiz():
     marks = 0
     st.header("Test Results:")
 
-    questions = session.quiz_data["questions"]  # Get the list of questions
+    questions = session.quiz_data["questions"]
 
     with st.status("Your result Generating...", expanded=False) as status:
-        for i, question in enumerate(questions):  # Use enumerate for indexing
+        for i, question in enumerate(questions):
             selected = session.quiz_data["selected_options"].get(i, "Not Answered")
             correct = question["Options"].get(question["Correct_option"], "Unknown")
 
@@ -134,13 +134,14 @@ def auto_submit_quiz():
         st.error(f"Error generating PDF: {str(e)}")
 
     # Reset the quiz state after submission
-    st.session_state.quiz_data = {
+    session.quiz_data = {
         "questions": [],
         "selected_options": {},
-        "submitted": True,
         "time_remaining": 0,
+        "submitted": True,
     }
-    st.cache_data.clear()  # Clearing cached data
+    session["timer"] = False
+    st.cache_data.clear()
 
 
 def submit_quiz():
@@ -189,6 +190,7 @@ def submit_quiz():
             "time_remaining": 0,
             "submitted": True,
         }
+        session["timer"] = False
         st.cache_data.clear()
 
 
@@ -200,11 +202,12 @@ def test_with_topic_interface():
             "questions": {},
             "submitted": False,
             "time_remaining": 0,
+            "timer": False,
         }
 
     text_content = st.text_input(
         "Enter Topics for Test:",
-        help="Separated by comma if multiple like Arrays,String in Data structure",
+        help="Seperated by comma if multiple like Arrays,String in Data structure",
     )
     quiz_level = st.selectbox(
         "Select Difficulty:",
@@ -220,28 +223,25 @@ def test_with_topic_interface():
     duration = st.slider("Set Test Time (minutes):", 1, 30, 10)  # User sets the timer
 
     if st.button("Generate Test"):
-        with st.spinner("Generating Test, Please wait..."):
-            if not text_content:
-                st.warning(
-                    "⚠️ Please enter at least one topic before generating the test."
+        if not text_content:
+            st.warning("⚠️ Please enter at least one topic before generating the test.")
+        elif session.quiz_data["questions"] and not session.quiz_data["submitted"]:
+            st.warning(
+                "⚠️ You have an active test. Complete and submit it before starting a new one."
+            )
+        else:
+            while True:
+                session.quiz_data["questions"] = fetch_questions(
+                    text_content, quiz_level, number
                 )
-            elif session.quiz_data["questions"] and not session.quiz_data["submitted"]:
-                st.warning(
-                    "⚠️ You have an active test. Complete and submit it before starting a new one."
-                )
-            else:
-                while True:
-                    st.session_state.quiz_data["questions"] = fetch_questions(
-                        text_content, quiz_level, number
-                    )
-                    if st.session_state.quiz_data["questions"]:
-                        break
-                    else:
-                        continue
-                session.quiz_data["selected_options"] = {}
-                session.quiz_data["time_remaining"] = (
-                    duration * 60
-                )  # Convert minutes to seconds
+                if st.session_state.quiz_data["questions"]:
+                    break
+                else:
+                    continue
+            session.quiz_data["selected_options"] = {}
+            session.quiz_data["time_remaining"] = (
+                duration * 60
+            )  # Convert minutes to seconds
 
     if session.quiz_data["questions"] and not session.quiz_data.get("submitted", False):
         display_question()
