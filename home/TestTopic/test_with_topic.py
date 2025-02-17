@@ -185,20 +185,28 @@ def test_with_topic_interface():
     duration = st.slider("Set Test Time (minutes):", 1, 30, 10)  # User sets the timer
 
     if st.button("Generate Test"):
-        if not text_content:
-            st.warning("⚠️ Please enter at least one topic before generating the test.")
-        elif session.quiz_data["questions"] and not session.quiz_data["submitted"]:
-            st.warning(
-                "⚠️ You have an active test. Complete and submit it before starting a new one."
-            )
-        else:
-            session.quiz_data["questions"] = fetch_questions(
-                text_content, quiz_level, number
-            )
-            session.quiz_data["selected_options"] = {}
-            session.quiz_data["time_remaining"] = (
-                duration * 60
-            )  # Convert minutes to seconds
+        with st.spinner("Generating Test, Please wait..."):
+            if not text_content:
+                st.warning("⚠️ Please enter at least one topic before generating the test.")
+            elif session.quiz_data["questions"] and not session.quiz_data["submitted"]:
+                st.warning(
+                    "⚠️ You have an active test. Complete and submit it before starting a new one."
+                )
+            else:
+                while True:
+                    st.session_state.quiz_data["questions"] = fetch_questions(
+                        text_content,
+                        quiz_level,
+                        number,
+                    )
+                    if st.session_state.quiz_data["questions"]:
+                        break
+                    else:
+                        continue
+                session.quiz_data["selected_options"] = {}
+                session.quiz_data["time_remaining"] = (
+                    duration * 60
+                )  # Convert minutes to seconds
 
     if session.quiz_data["questions"] and not session.quiz_data.get("submitted", False):
         display_question()

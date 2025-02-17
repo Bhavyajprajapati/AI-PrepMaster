@@ -53,7 +53,7 @@ def fetch_questions(text_content, quiz_level, number, extracted_text):
             ...
             ]
         }}
-        Ensure the "MCQS" contains exactly {number} questions and nothing else.
+        Ensure the "MCQS" contains exactly {number + 10} questions and nothing else.
         Here is the text:
         \n{extracted_text}\n
         please **DO NOT** include any extra explanations or text. Only return the JSON part as shown above. Make sure the response is valid JSON without any additional formatting or extra text.
