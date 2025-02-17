@@ -4,23 +4,28 @@ from login.utils import hash_password, verify_password
 import json
 from streamlit_lottie import st_lottie
 
+
 @st.cache_data  # Caching the animation
 def load_lottiefile(filepath: str):
-    with open(filepath,"r") as f:
+    with open(filepath, "r") as f:
         return json.load(f)
+
 
 def signup(email, username, password, favorite_person):
     if users_collection.find_one({"email": email}):
         return "Email already exists. Please use another."
-    
+
     hashed_password = hash_password(password)
-    users_collection.insert_one({
-        "email": email,
-        "username": username,
-        "password": hashed_password,
-        "favorite_person": favorite_person.lower()
-    })
+    users_collection.insert_one(
+        {
+            "email": email,
+            "username": username,
+            "password": hashed_password,
+            "favorite_person": favorite_person.lower(),
+        }
+    )
     return "Signup successful! You can now log in."
+
 
 def login(email, password):
     user = users_collection.find_one({"email": email})
@@ -28,66 +33,79 @@ def login(email, password):
         return user["username"]
     return None
 
+
 def reset_password(email, favorite_person, new_password):
     user = users_collection.find_one({"email": email})
     if not user:
         return "Email not found!"
-    
+
     if user["favorite_person"] == favorite_person.lower():
         hashed_password = hash_password(new_password)
-        users_collection.update_one({"email": email}, {"$set": {"password": hashed_password}})
+        users_collection.update_one(
+            {"email": email}, {"$set": {"password": hashed_password}}
+        )
         return "Password reset successful! You can now log in."
     else:
         return "Incorrect security answer!"
 
+
 def login_st_interface():
-    st.markdown("""
+    st.markdown(
+        """
         <h3 style='text-align:center;'>Ai-PreapMaster</h3>            
-        """,unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True,
+    )
     # st.image("media_files/home_img_new.png",use_container_width=True)
     lattie_ani = load_lottiefile("animation_login.json")
     st_lottie(
         lattie_ani,
-        speed = 1,
+        speed=1,
         reverse=False,
         loop=True,
         quality="high",
         height=310,
-        width = None,
+        width=None,
         key="loattie_animation",
     )
-    st.markdown("""
+    st.markdown(
+        """
         <p style='font-size:18px; text-align:center'>
         Want to learn, why wait? just login and <strong style='color:dodgerblue'>Get Started!<strong></p>
-        """,unsafe_allow_html=True)
-    
+        """,
+        unsafe_allow_html=True,
+    )
+
     st.subheader("Login to Your Account")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
+    with st.spinner("Login , Please wait..."):
+        if st.button("Login"):
+            username = login(email, password)
+            if username:
+                st.session_state["logged_in"] = True
+                st.session_state["username"] = username
+                st.session_state["page"] = "Home"
+                st.success(f"Welcome, {username}!")
+                st.session_state["uploaded_and_analyzed"] = False
+                st.session_state.quiz_data = {
+                    "questions": {},
+                    "submitted": False,
+                    "time_remaining": 0,
+                }
+                st.rerun()
+            else:
+                st.error("Invalid email or password.")
 
-    if st.button("Login"):
-        username = login(email, password)
-        if username:
-            st.session_state["logged_in"] = True
-            st.session_state["username"] = username
-            st.session_state["page"] = "Home"
-            st.success(f"Welcome, {username}!")
-            st.session_state["uploaded_and_analyzed"] = False
-            st.session_state.quiz_data = {
-                "questions": {},
-                "submitted": False,
-                "time_remaining": 0,
-            }
-            st.rerun()
-        else:
-            st.error("Invalid email or password.")
 
 def signup_st_interface():
     st.subheader("Create a New Account")
     email = st.text_input("Email")
     new_username = st.text_input("Username")
     new_password = st.text_input("Password", type="password")
-    favorite_person = st.text_input("Who is your Favorite Person? (Used for password reset)")
+    favorite_person = st.text_input(
+        "Who is your Favorite Person? (Used for password reset)"
+    )
 
     if st.button("Submit"):
         if email and new_username and new_password and favorite_person:
@@ -98,6 +116,7 @@ def signup_st_interface():
                 st.error(message)
         else:
             st.warning("Please fill in all fields.")
+
 
 def forget_st_interface():
     st.subheader("Reset Your Password")
