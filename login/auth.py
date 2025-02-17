@@ -79,23 +79,23 @@ def login_st_interface():
     st.subheader("Login to Your Account")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
-
-    if st.button("Login"):
-        username = login(email, password)
-        if username:
-            st.session_state["logged_in"] = True
-            st.session_state["username"] = username
-            st.session_state["page"] = "Home"
-            st.success(f"Welcome, {username}!")
-            st.session_state["uploaded_and_analyzed"] = False
-            st.session_state.quiz_data = {
-                "questions": {},
-                "submitted": False,
-                "time_remaining": 0,
-            }
-            st.rerun()
-        else:
-            st.error("Invalid email or password.")
+    with st.spinner("Login , Please wait..."):
+        if st.button("Login"):
+            username = login(email, password)
+            if username:
+                st.session_state["logged_in"] = True
+                st.session_state["username"] = username
+                st.session_state["page"] = "Home"
+                st.success(f"Welcome, {username}!")
+                st.session_state["uploaded_and_analyzed"] = False
+                st.session_state.quiz_data = {
+                    "questions": {},
+                    "submitted": False,
+                    "time_remaining": 0,
+                }
+                st.rerun()
+            else:
+                st.error("Invalid email or password.")
 
 
 def signup_st_interface():
