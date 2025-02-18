@@ -2,7 +2,6 @@ import streamlit as st
 import time,PyPDF2,pinecone
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain_experimental.text_splitter import SemanticChunker
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_pinecone import PineconeVectorStore
 from uuid import uuid4
 from langchain_core.documents import Document
@@ -50,13 +49,7 @@ def store_in_vector(docs,embeddings):
     st.rerun()
 
 def generate_embedding(text):
-    # text_splitter = SemanticChunker(HuggingFaceEndpointEmbeddings(model=model_id,task="feature-extraction",huggingfacehub_api_token=hf_token),breakpoint_threshold_type="gradient")
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=2330,
-        chunk_overlap=20,
-        length_function=len,
-        is_separator_regex=False,
-    )
+    text_splitter = SemanticChunker(HuggingFaceEndpointEmbeddings(model=model_id,task="feature-extraction",huggingfacehub_api_token=hf_token),breakpoint_threshold_type="gradient")
     docs = text_splitter.create_documents([text])
     embeddings = HuggingFaceEndpointEmbeddings(model=model_id,task="feature-extraction",huggingfacehub_api_token=hf_token)
     store_in_vector(docs,embeddings)
