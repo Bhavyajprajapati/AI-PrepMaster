@@ -139,15 +139,15 @@ def auto_submit_quiz():
     st.subheader(f"Final Score: {marks} / {len(questions)}")
 
     if st.button("new test"):
-            # Reset the quiz state after submission
-            st.session.quiz_data = {
-            "questions": [],
-            "selected_options": {},
-            "time_remaining": 0,
-            "submitted": True,
-        }
-            st.session["timer"] = False
-            st.cache_data.clear()
+        # Reset the quiz state after submission
+        st.session.quiz_data = {
+        "questions": [],
+        "selected_options": {},
+        "time_remaining": 0,
+        "submitted": True,
+    }
+        st.session["timer"] = False
+        st.cache_data.clear()
             
     try:
         # Generate ZIP file containing both PDFs
