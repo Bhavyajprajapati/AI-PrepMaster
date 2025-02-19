@@ -229,3 +229,10 @@ def learn_particular_topic_interface():
                         st.success("Word Document generated successfully!")
                         st.download_button(label="Download Word Document", data=open(tmp_docx.name, "rb").read(), file_name=f"{st.session_state.first_topic}.docx", mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
             status.update(label="Processing complete!", state="complete", expanded=True)  # Finish status
+        
+        if st.button("Start new chat"):
+            del st.session_state["first_topic"]
+            del st.session_state["show_input"]
+            del st.session_state["communication_history"]
+            del st.session_state["generated_details"]
+            st.rerun()
