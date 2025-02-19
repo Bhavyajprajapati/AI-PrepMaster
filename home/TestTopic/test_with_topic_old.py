@@ -6,9 +6,7 @@ import google.generativeai as genai
 from home.TestTopic.Pdf import generate_quiz_zip
 
 session = st.session_state
-# API_KEY = "AIzaSyAFUFDlRGjxn_VEDn24vQ1BeFnXuoc-SIM"
-# API_KEY = "AIzaSyBeaF-Vr7Zm8fO1pNoWEx-pgKOxTLWZdYs"#shivam
-API_KEY = "AIzaSyB7n_R6Bs5JxGyzzS1V4DftNR9-Wu2j-2o"#sumit
+API_KEY = "AIzaSyAFUFDlRGjxn_VEDn24vQ1BeFnXuoc-SIM"
 genai.configure(api_key=API_KEY)
 
 
@@ -56,11 +54,10 @@ def fetch_questions(text_content, quiz_level, number):
 def display_question():
     """Display all questions and options."""
     questions = session.quiz_data["questions"]  # Get all questions
-    # session.timer = True
-    st.session_state.timer = True
+    session.timer = True
 
     for q_index, question in enumerate(questions):
-        if st.session_state.timer:
+        if session.timer:
             st.subheader(f"Q{q_index + 1}: {question['Mcq']}")
 
             # Display radio button for options
@@ -121,16 +118,6 @@ def auto_submit_quiz():
     status.update(label="View Result!", state="complete", expanded=False)
     st.subheader(f"Final Score: {marks} / {len(questions)}")
 
-    if st.button("new test"):
-            # Reset the quiz state after submission
-            session.quiz_data = {
-            "questions": [],
-            "selected_options": {},
-            "time_remaining": 0,
-            "submitted": True,
-        }
-            session["timer"] = False
-            st.cache_data.clear()
     try:
         # Generate ZIP file containing both PDFs
         zip_buffer = generate_quiz_zip(session.quiz_data)
@@ -145,6 +132,7 @@ def auto_submit_quiz():
 
     except Exception as e:
         st.error(f"Error generating PDF: {str(e)}")
+
     # Reset the quiz state after submission
     session.quiz_data = {
         "questions": [],
@@ -163,7 +151,7 @@ def submit_quiz():
         marks = 0
         st.header("Test Results:")
 
-        questions = st.session_state.quiz_data["questions"]
+        questions = session.quiz_data["questions"]
 
         with st.status("Your result Generating...", expanded=False) as status:
             for i, question in enumerate(questions):
@@ -179,26 +167,6 @@ def submit_quiz():
 
         status.update(label="View Result!", state="complete", expanded=False)
         st.subheader(f"Final Score: {marks} / {len(questions)}")
-        st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] { display: block !important; }
-    [data-testid="collapsedControl"] { display: block !important; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-        
-        if st.button("new test"):
-            # Reset the quiz state after submission
-            session.quiz_data = {
-            "questions": [],
-            "selected_options": {},
-            "time_remaining": 0,
-            "submitted": True,
-        }
-            session["timer"] = False
-            st.cache_data.clear()
 
         try:
             # Generate ZIP file containing both PDFs
@@ -214,7 +182,7 @@ def submit_quiz():
 
         except Exception as e:
             st.error(f"Error generating PDF: {str(e)}")
-            
+
         # Reset the quiz state after submission
         session.quiz_data = {
             "questions": [],
@@ -224,10 +192,9 @@ def submit_quiz():
         }
         session["timer"] = False
         st.cache_data.clear()
-        
 
 
-def ask_topic_for_test():
+def test_with_topic_interface():
     st.subheader("Test With Topics")
     # Initialize session state for the quiz
     if "quiz_data" not in session:
@@ -235,6 +202,7 @@ def ask_topic_for_test():
             "questions": {},
             "submitted": False,
             "time_remaining": 0,
+            "timer": False,
         }
 
     text_content = st.text_input(
@@ -255,73 +223,25 @@ def ask_topic_for_test():
     duration = st.slider("Set Test Time (minutes):", 1, 30, 10)  # User sets the timer
 
     if st.button("Generate Test"):
-        with st.spinner("Generating Test, Please wait..."):
-
-            if not text_content:
-                st.warning("⚠️ Please enter at least one topic before generating the test.")
-            elif session.quiz_data["questions"] and not session.quiz_data["submitted"]:
-                st.warning(
-                    "⚠️ You have an active test. Complete and submit it before starting a new one."
+        if not text_content:
+            st.warning("⚠️ Please enter at least one topic before generating the test.")
+        elif session.quiz_data["questions"] and not session.quiz_data["submitted"]:
+            st.warning(
+                "⚠️ You have an active test. Complete and submit it before starting a new one."
+            )
+        else:
+            while True:
+                session.quiz_data["questions"] = fetch_questions(
+                    text_content, quiz_level, number
                 )
-            else:
-                while True:
-                    session.quiz_data["questions"] = fetch_questions(
-                        text_content, quiz_level, number
-                    )
-                    if st.session_state.quiz_data["questions"]:
-                        break
-                    else:
-                        continue
-                st.session_state.quiz_data["current_index"] = 0
-                st.session_state.quiz_data["submitted"] = False
-                st.session_state.quiz_data["selected_options"] = {}
-                st.session_state.quiz_data["time_remaining"] = (
-                    duration * 60
-                )  # Convert minutes to seconds
-            st.rerun()
-    # if session.quiz_data["questions"] and not session.quiz_data.get("submitted", False):
-    #     display_question()
+                if st.session_state.quiz_data["questions"]:
+                    break
+                else:
+                    continue
+            session.quiz_data["selected_options"] = {}
+            session.quiz_data["time_remaining"] = (
+                duration * 60
+            )  # Convert minutes to seconds
 
-def test_with_topic_interface():
-    if (
-        not st.session_state.quiz_data["questions"]
-    ):
-        st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] { display: block !important; }
-    [data-testid="collapsedControl"] { display: block !important; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-        ask_topic_for_test()
-    elif (
-        st.session_state.quiz_data["questions"]
-    ):
-        st.warning(
-            "Complete your Test and submit it in given time, Timer is shown below the Test..."
-        )
-        st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] { display: none; }
-    [data-testid="collapsedControl"] { display: none; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-    
-    if st.session_state.quiz_data["questions"] and not st.session_state.quiz_data.get(
-        "submitted", False
-    ):
+    if session.quiz_data["questions"] and not session.quiz_data.get("submitted", False):
         display_question()
-        st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] { display: none; }
-    [data-testid="collapsedControl"] { display: none; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
