@@ -138,17 +138,6 @@ def auto_submit_quiz():
     status.update(label="View Result!", state="complete", expanded=False)
     st.subheader(f"Final Score: {marks} / {len(questions)}")
 
-    if st.button("new test"):
-            # Reset the quiz state after submission
-            st.session.quiz_data = {
-            "questions": [],
-            "selected_options": {},
-            "time_remaining": 0,
-            "submitted": True,
-        }
-            st.session["timer"] = False
-            st.cache_data.clear()
-            
     try:
         # Generate ZIP file containing both PDFs
         zip_buffer = generate_quiz_zip(st.session_state.quiz_data)
@@ -170,8 +159,6 @@ def auto_submit_quiz():
         "submitted": True,
         "time_remaining": 0,
     }
-    st.session["timer"] = False
-
     st.cache_data.clear()  # Clearing cached data
 
 
@@ -199,25 +186,7 @@ def submit_quiz():
                     marks += 1
         status.update(label="View Result!", state="complete", expanded=False)
         st.subheader(f"Final Score: {marks} / {len(questions)}")
-        st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] { display: block !important; }
-    [data-testid="collapsedControl"] { display: block !important; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-        if st.button("new test"):
-            # Reset the quiz state after submission
-            st.session.quiz_data = {
-            "questions": [],
-            "selected_options": {},
-            "time_remaining": 0,
-            "submitted": True,
-        }
-            st.session["timer"] = False
-            st.cache_data.clear()
+
         try:
             # Generate ZIP file containing both PDFs
             zip_buffer = generate_quiz_zip(st.session_state.quiz_data)
@@ -310,46 +279,19 @@ def test_with_your_material_interface():
         and not st.session_state.quiz_data["questions"]
     ):
         ask_topic_for_test()
-        st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] { display: block !important; }
-    [data-testid="collapsedControl"] { display: block !important; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
     elif (
         st.session_state["uploaded_and_analyzed"]
         and st.session_state.quiz_data["questions"]
     ):
         st.warning(
-            "⚠️ Complete your Test and submit it in given time, Timer is shown below the Test..."
+            "Complete you Test and submit it in given time, Timer is shown below the Test..."
         )
-        st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] { display: none; }
-    [data-testid="collapsedControl"] { display: none; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
     else:
         st.warning(
-            "⚠️ If you not uploaded your Material please go to the upload material section first."
+            "If you not uploaded your Material please go to the upload material section first."
         )
 
     if st.session_state.quiz_data["questions"] and not st.session_state.quiz_data.get(
         "submitted", False
     ):
         display_question()
-        st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] { display: none; }
-    [data-testid="collapsedControl"] { display: none; }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
