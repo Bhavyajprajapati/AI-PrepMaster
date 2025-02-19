@@ -427,6 +427,7 @@ def omr_checking_interface():
                 st.image(processed_image, caption=f"Processed: image", use_container_width=True, channels="GRAY")
                 # st.image(processed_image, caption=f"Processed: {uploaded_file.name}", use_column_width=True, channels="GRAY")
             status.update(label="Processing complete!", state="complete", expanded=False)  # Finish status
+            st.balloons()
 
 
         
