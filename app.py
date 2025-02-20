@@ -6,7 +6,7 @@ from home.config import config_set
 from login.auth import login_st_interface, signup_st_interface, forget_st_interface
 from home.home import home
 from home.UsageGuide.usage_guide import usage_guide_interface
-
+from feedback.user_feedback import user_feedback_interface 
 if "st_config_set" not in st.session_state:
     config_set()
     st.session_state["st_config_set"] = True
@@ -44,8 +44,8 @@ else:
     with st.sidebar:
         menu = option_menu(
             menu_title='AI-PrepMaster',
-            options=['Login', 'Signup', 'Forget password', 'Usage guide'],
-            icons=['person-circle', 'person-add', 'key-fill', 'info-circle-fill','book'],
+            options=['Login', 'Signup', 'Forget password', 'Usage guide','Give Your Feedback'],
+            icons=['person-circle', 'person-add', 'key-fill', 'info-circle-fill','chat-dots-fill'],
             menu_icon='list',
             # menu_icon=None,
             default_index=0,
@@ -80,3 +80,6 @@ else:
     """
         st.markdown(login_time_guide,unsafe_allow_html=True)     
         usage_guide_interface()
+        
+    elif menu == "Give Your Feedback":
+        user_feedback_interface()
