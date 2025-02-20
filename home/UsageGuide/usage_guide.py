@@ -21,7 +21,7 @@ def usage_guide_interface():
     ]
 
     cont = """
-    #### 📌 After selecting your choice from sidebar you can hide it for better view and also redisplay it when required
+    #### 📌 After selecting your choice from the sidebar you can hide it for a better view and also redisplay it when needed.
     """
 
     st.markdown(cont, unsafe_allow_html=True)
@@ -36,9 +36,9 @@ Welcome to *Ai-prepMaster*, your interactive learning companion! This guide prov
 
 ## 🌟 Features
 -  Generate detailed explanations for any topic.
--  Response according to previously entered topic.
+-  Generates responses based on previously entered topics.
 -  Convert responses into *📄 PDF* and *📝 Word documents* for offline use.
--  Interactive UI for a seamless learning experience.
+-  An interactive UI for a seamless learning experience.
 
 ## 📖 How to Use
 
@@ -54,7 +54,7 @@ Welcome to *Ai-prepMaster*, your interactive learning companion! This guide prov
 ### 3️⃣ Generating and Downloading Documents
 -  Click *Generate PDF* to save the conversation as a PDF.
 -  Click *Generate Word Document* to download it as a DOCX file.
--  The files are automatically formatted for easy reading and printing.
+-  These files are automatically formatted for easy reading and printing.
 
 ### 4️⃣ Continue Learning
 -  Click *Next Input* to enter a new topic and continue learning.
@@ -85,8 +85,8 @@ Welcome to our OMR Processing section! This section allows users to generate and
 
 ## 🚀 Steps to Use
 #### 📌 Open the Download OMR from the sidebar
-### 1️⃣ Download Sample PDF
-- According to your requirement download OMR sheet.
+### 1️⃣ Download a Sample PDF
+- Download an OMR sheet based on your requirement.
 
 ### 2️⃣ Create Your Question Paper
 You have two options:
@@ -99,28 +99,38 @@ You have two options:
 ### 3️⃣ Upload Your OMR Sheets
 - Upload your *filled OMR sheets* (images or PDFs).
 - You can upload a mix of images and PDFs.
-- Ensure that the images are *clear, with no **shadows* over the OMR.
+- Ensure that the images are clear, with no shadows over the OMR.
 
 ### 4️⃣ Select Evaluation Criteria
-- Enter the *number of questions, **negative marking count, and **number of options* per question.
+- Enter the number of questions, negative marking count, and number of options per question.
 
 ### 5️⃣ Provide Answer Key
-- *If using our generated question paper: Simply paste the **provided answer key*.
-- *If checking your own paper: Enter the correct answers separated by commas (e.g., **A,B,C*). Ensure:
+- If using our generated question paper: Simply paste the *provided answer key*.
+- If checking your own paper: Enter the correct answers separated by commas (e.g., *A,B,C*). Ensure:
   - All answers are in *capital letters*.
   - The answers match the selected *number of options*.
 
 ### 6️⃣ Click Check
-- Click the *Check* button to start processing.
+- Click Check to start processing.
 - The system will evaluate all *pages of PDFs and images*.
 - A *live panel* will display real-time processing updates.
-- The processed results will be compiled into a *downloadable PDF*.
+- The processed results will be available in a downloadable PDF.
+
+### 7️⃣ Download Results
+
+- You will get all the processed images in a single PDF file:
+  - *Green*: Correct
+  - *Red*: Incorrect
+  - *Blue x*: Correct answer which user not attempted
+  - If a user marks multiple options, it will be considered incorrect, and a Blue X will be displayed on the correct answer.
+  - You will also get score, correct answers count, negative counts(wrong), and not attempted counts with in images of downloaded pdf.
+---
 
 ## ⚠️ Constraints & Guidelines
-- *Image & PDF Quality*: Ensure clarity, no shadows, and proper alignment.
-- *OMR Format: Use only **predefined templates provided by us*.
-- *Filling Instructions: Use a **black or blue pen* and fully mark bubbles.
-- *File Size Limit: Maximum **30 MB* per file.
+- Image & PDF Quality: Ensure clarity, no shadows, and proper alignment.
+- OMR Format: Use only the predefined templates provided by us.
+- Filling Instructions: Use a black or blue pen and completely fill in the bubbles.
+- File Size Limit: Maximum *30 MB* per file.
 
 For assistance, contact *📧 aiprepmaster@gmail.com*.
 
@@ -137,13 +147,13 @@ By following these steps and guidelines, users can efficiently process OMR sheet
 
 ## ✨ Introduction
 
-Welcome to *AI-PrepMaster*, your smart MCQ test generator! This guide will help you navigate through the test creation process, customize your quiz settings, and download results efficiently.
+Welcome to *Ai-PrepMaster*, your smart MCQ test generator! This guide will help you navigate through the test creation process, customize your quiz settings, and download results efficiently.
 
 ## 🌟 Features
 
 - Select a topic for your MCQ test.
 - Choose the *number of questions* for the test.
-- Set a *time limit* for the test.
+- Set a time limit for completing the test.
 - Select a *difficulty level*:
 - Instant result evaluation with correct answers.
 - *Downloadable PDFs* in multiple formats.
@@ -169,7 +179,7 @@ Welcome to *AI-PrepMaster*, your smart MCQ test generator! This guide will help 
 
 - Click *Start Test*.
 - Answer the MCQs. You can leave a question blank if unsure.
-- The test can be submitted using submit button at bottom or it will *automatically submits* when the timer runs out.
+- The test can be submitted using the Submit button at the bottom or it will *automatically submits* when the timer runs out.
 
 ### 4️⃣ Submission and Instant Results
 
@@ -179,7 +189,7 @@ Welcome to *AI-PrepMaster*, your smart MCQ test generator! This guide will help 
 
 ### 5️⃣ Download Results
 
-- you will get the following PDFs in zip:
+- You will get the following PDFs in a ZIP file:
   1. *quiz\_answer.pdf* – Contains only the correct answers.
   2. *quiz\_with\_response.pdf* – Highlights your selected answers:
      - *Green*: Correct
@@ -199,7 +209,7 @@ Welcome to *AI-PrepMaster*, your smart MCQ test generator! This guide will help 
 
 ## 🎯 Conclusion
 
-With *AI-PrepMaster*, you can efficiently test your knowledge, track your performance, and download structured reports. Start mastering topics today!
+With *Ai-PrepMaster*, you can efficiently test your knowledge, track your performance, and download structured reports. Start mastering topics today!
 For assistance, contact 📧 aiprepmaster@gmail.com
 
         """
@@ -210,7 +220,7 @@ For assistance, contact 📧 aiprepmaster@gmail.com
 
 ## ✨ Introduction
 
-Welcome to *AI-PrepMaster*, your smart MCQ test generator! This guide will help you navigate through the test creation process, customize your quiz settings, and download results efficiently.
+Welcome to *Ai-PrepMaster*, your smart MCQ test generator! This guide will help you navigate through the test creation process, customize your quiz settings, and download results efficiently.
 
 ## 🌟 Features
 
@@ -231,7 +241,7 @@ Welcome to *AI-PrepMaster*, your smart MCQ test generator! This guide will help 
 - File size must be less than 30Mb.
 - Click *Confirm upload* to proceed.
 - It will process your pdf 
-- If you want to upload another pdf then you can click want to upload another pdf
+- If you want to upload another PDF, click on 'Upload Another PDF'.
 - Only after pdf uploaded and processed you can test with it. 
 
 ### 2️⃣ Configure Test Settings
@@ -278,7 +288,7 @@ Welcome to *AI-PrepMaster*, your smart MCQ test generator! This guide will help 
 
 ## 🎯 Conclusion
 
-With *AI-PrepMaster*, you can efficiently generate tests from your own study material, track your performance, and download structured reports. Start mastering topics today!
+With *Ai-PrepMaster*, you can efficiently generate tests from your own study material, track your performance, and download structured reports. Start mastering topics today!
 For assistance, contact 📧 aiprepmaster@gmail.com
 """
         st.markdown(content, unsafe_allow_html=True)

@@ -96,6 +96,31 @@ def omr_checking_interface():
     st.subheader("OMR Sheet Checking")
     
     uploaded_files = st.file_uploader("Upload OMR sheet images",help="Multiple images are also allowed", type=["jpg", "png", "jpeg" ,"pdf"], accept_multiple_files=True)
+    # uploaded_files1 = st.file_uploader("Upload OMR sheet images",help="Multiple images are also allowed", type=["jpg", "png", "jpeg" ,"pdf"], accept_multiple_files=True)
+    #capture_from_camera = st.radio("Do you want to capture images using the camera?", ("No", "Yes"))
+
+    # camera_captured_images = []  # List to store captured images
+
+    # if capture_from_camera == "Yes":
+    #     num_images = st.number_input("How many images do you want to capture?", min_value=1, max_value=10, value=1, step=1)
+
+    #     for i in range(num_images):
+    #         st.write(f"Capture Image {i + 1}")
+    #         captured_image = st.camera_input(f"Take Image {i + 1}")
+    #         if captured_image:
+    #             camera_captured_images.append(captured_image)
+
+    # Step 3: Combine uploaded and captured images
+    # uploaded_files = list(uploaded_files1) + camera_captured_images
+
+    # Display the total number of images selected
+    # st.write(f"Total Images for Processing: {len(uploaded_files)}")
+
+        
+    
+    
+    
+    
     questions = st.selectbox("Number of Questions", options=[10, 15, 20, 25,30])
     negative_marking = st.number_input("Negative Marking Value", min_value=0.0, value=0.0)
     choices = st.number_input("Number of Choices", min_value=4,max_value=5)
@@ -183,7 +208,8 @@ def omr_checking_interface():
                     img = cv2.imdecode(file_bytes, 1)
                     images.append(img)
         
-            
+            st.write(f"Total Images for Processing: {len(images)}")
+
             
             for uploaded_file in images:
                 # file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
@@ -196,7 +222,10 @@ def omr_checking_interface():
                 imgFinal = img.copy()
                 imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
                 # st.image(imgGray)
-                imgBlur = cv2.GaussianBlur(imgGray, (5, 5), 1)
+                imgBlur = cv2.GaussianBlur(imgGray, (5, 5), 0)
+                
+                
+                
                 imgCanny = cv2.Canny(imgBlur, 10, 70)
                 # st.image(imgCanny)
 

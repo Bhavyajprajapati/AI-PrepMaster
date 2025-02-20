@@ -1,31 +1,51 @@
+import re
 import streamlit as st
 from login.database import users_collection
 from login.utils import hash_password, verify_password
 import json
 from streamlit_lottie import st_lottie
-
+from hashlib import sha256
 
 @st.cache_data  # Caching the animation
 def load_lottiefile(filepath: str):
     with open(filepath, "r") as f:
         return json.load(f)
 
+def hash_favorite_person(favorite_person):
+    return sha256(favorite_person.lower().encode()).hexdigest()
+
+def validate_email(email):
+    # Basic email validation using regex
+    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    return re.match(pattern, email) is not None
+
+def validate_password(password):
+    # Password must contain at least one special character, one uppercase letter, and one number
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long."
+    if not re.search(r"[A-Z]", password):
+        return False, "Password must contain at least one uppercase letter."
+    if not re.search(r"[0-9]", password):
+        return False, "Password must contain at least one number."
+    if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        return False, "Password must contain at least one special character."
+    return True, "Password is valid."
 
 def signup(email, username, password, favorite_person):
     if users_collection.find_one({"email": email}):
         return "Email already exists. Please use another."
 
     hashed_password = hash_password(password)
+    hashed_favourite_person = hash_favorite_person(favorite_person)
     users_collection.insert_one(
         {
             "email": email,
             "username": username,
             "password": hashed_password,
-            "favorite_person": favorite_person.lower(),
+            "favorite_person": hashed_favourite_person,
         }
     )
     return "Signup successful! You can now log in."
-
 
 def login(email, password):
     user = users_collection.find_one({"email": email})
@@ -33,13 +53,14 @@ def login(email, password):
         return user["username"]
     return None
 
-
 def reset_password(email, favorite_person, new_password):
     user = users_collection.find_one({"email": email})
     if not user:
         return "Email not found!"
+    
+    hashed_fav_person = hash_favorite_person(favorite_person)
 
-    if user["favorite_person"] == favorite_person.lower():
+    if user["favorite_person"] == hashed_fav_person:
         hashed_password = hash_password(new_password)
         users_collection.update_one(
             {"email": email}, {"$set": {"password": hashed_password}}
@@ -48,7 +69,6 @@ def reset_password(email, favorite_person, new_password):
     else:
         return "Incorrect security answer!"
 
-
 def login_st_interface():
     st.markdown(
         """
@@ -56,7 +76,6 @@ def login_st_interface():
         """,
         unsafe_allow_html=True,
     )
-    # st.image("media_files/home_img_new.png",use_container_width=True)
     lattie_ani = load_lottiefile("animation_login.json")
     st_lottie(
         lattie_ani,
@@ -79,7 +98,7 @@ def login_st_interface():
     st.subheader("Login to Your Account")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
-    with st.spinner("Login , Please wait..."):
+    with st.spinner("Logging in, please wait..."):
         if st.button("Login"):
             username = login(email, password)
             if username:
@@ -97,26 +116,31 @@ def login_st_interface():
             else:
                 st.error("Invalid email or password.")
 
-
 def signup_st_interface():
     st.subheader("Create a New Account")
     email = st.text_input("Email")
     new_username = st.text_input("Username")
-    new_password = st.text_input("Password", type="password")
+    new_password = st.text_input("Password", type="password",help="Password must contain at least one special character, one uppercase letter, one number, and must be at least 8 characters long ")
     favorite_person = st.text_input(
         "Who is your Favorite Person? (Used for password reset)"
     )
 
     if st.button("Submit"):
         if email and new_username and new_password and favorite_person:
-            message = signup(email, new_username, new_password, favorite_person)
-            if "successful" in message:
-                st.success(message)
+            if not validate_email(email):
+                st.error("Invalid email format. Please enter a valid email.")
             else:
-                st.error(message)
+                is_valid, password_message = validate_password(new_password)
+                if not is_valid:
+                    st.error(password_message)
+                else:
+                    message = signup(email, new_username, new_password, favorite_person)
+                    if "successful" in message:
+                        st.success(message)
+                    else:
+                        st.error(message)
         else:
             st.warning("Please fill in all fields.")
-
 
 def forget_st_interface():
     st.subheader("Reset Your Password")
@@ -126,10 +150,14 @@ def forget_st_interface():
 
     if st.button("Reset Password"):
         if email and favorite_person and new_password:
-            message = reset_password(email, favorite_person, new_password)
-            if "successful" in message:
-                st.success(message)
+            is_valid, password_message = validate_password(new_password)
+            if not is_valid:
+                st.error(password_message)
             else:
-                st.error(message)
+                message = reset_password(email, favorite_person, new_password)
+                if "successful" in message:
+                    st.success(message)
+                else:
+                    st.error(message)
         else:
             st.warning("Please fill in all fields.")
