@@ -28,7 +28,7 @@ def home():
             menu_icon='none',
             default_index=6,
             styles={
-                "container": {"padding": "5!important","background-color":'black'},
+                "container": {"padding": "5!important","background-color":'#07060652'},
     "icon": {"color": "white", "font-size": "23px"}, 
     "nav-link": {"color":"white","font-size": "25px", "text-align": "left", "margin":"0px", "--hover-color": "gray"},
     "nav-link-selected": {"background-color": "#02ab21"},}

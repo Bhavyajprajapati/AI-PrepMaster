@@ -98,7 +98,7 @@ def login_st_interface():
     st.subheader("Login to Your Account")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
-    with st.spinner("Login , Please wait..."):
+    with st.spinner("Logging in, please wait..."):
         if st.button("Login"):
             username = login(email, password)
             if username:
