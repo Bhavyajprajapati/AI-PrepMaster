@@ -6,7 +6,6 @@ import pdfkit
 import tempfile
 from docx import Document  # For Word file generation
 # python-docx
-import langdetect  # You may need to install this library: pip install langdetect
 import re
 
 
