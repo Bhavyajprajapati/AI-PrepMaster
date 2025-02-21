@@ -25,3 +25,4 @@ pdfkit
 python-docx
 streamlit_lottie
 streamlit-option-menu
+langdetect

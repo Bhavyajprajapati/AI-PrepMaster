@@ -6,6 +6,8 @@ import pdfkit
 import tempfile
 from docx import Document  # For Word file generation
 # python-docx
+import langdetect  # You may need to install this library: pip install langdetect
+import re
 
 
 
@@ -82,8 +84,24 @@ def convert_markdown_to_word(md_text):
     except Exception as e:
         st.error(f"Error generating Word document: {e}")
         return None
+def is_english(text):
+    """
+    Check if the input text contains only English characters, numbers, and common programming symbols.
+    """
+    # Regex to match English characters, numbers, and common programming symbols
+    pattern = re.compile(r'^[A-Za-z0-9\s\.,;:\-+_=!@#$%^&*(){}[\]<>?/|\\`~"\']+$')
+    return bool(pattern.match(text))
 
+def detect_language(text):
+    from langdetect import detect
+    if is_english(text):
+        return "en"
+    try:
+        return detect(text)
+    except:
+        return "en"  # Default to English if language detection fails
 def generate_response(topic, context=None):
+    language = detect_language(topic)
     if context:
         prompt = f"""
             Task: Act as an expert educator and curriculum designer. Continue the discussion based on the previous context and the new topic: {topic}.
@@ -97,8 +115,9 @@ def generate_response(topic, context=None):
             Requirements:
             - Provide a detailed response that builds on the previous context.
             - Include practical examples, code snippets (if applicable), and step-by-step explanations.
-            - If the topic is related to programming (e.g., Java, Python), provide executable code examples with explanations.
+            - Provide code snippets and its explanations **only if** the topic is related to computer engineering, programming, or IT fields, or if the user explicitly requests code in the topic.
             - If the new topic is unrelated, treat it as a standalone topic but acknowledge the previous context briefly.
+            - Respond in the same language as the topic: {language}.
         """
     else:
         st.session_state.first_topic = topic  # Save the first topic for file naming
@@ -109,7 +128,8 @@ def generate_response(topic, context=None):
             - Start with a concise definition and significance of the topic.
             - Provide key concepts, learning objectives, subtopics, applications, and resources.
             - Include practical examples, code snippets (if applicable), and step-by-step explanations.
-            - If the topic is related to programming (e.g., Java, Python), provide executable code examples with explanations.
+            - Provide code snippets and its explanations **only if** the topic is related to computer engineering, programming, or IT fields, or if the user explicitly requests code in the topic.
+            - Respond in the same language as the topic: {language}.
         """
     try:
         model = genai.GenerativeModel("gemini-pro")
